@@ -16,7 +16,7 @@
 		<header-file src="src/ios/RcpLib/Eas.h" />
 		<header-file src="src/ios/RcpLib/PhyUtility.h" />
 		<source-file src="src/ios/RcpLib/PhyUtility.m" />
-		<header-file src="src/ios/RcpLib/RcpBarcodeApi.h.h" />
+		<header-file src="src/ios/RcpLib/RcpBarcodeApi.h" />
 		<header-file src="src/ios/RcpLib/RcpRfidApi.h" />
 		<header-file src="src/ios/RcpLib/UartMgr.h" />
 		
