@@ -1,5 +1,15 @@
 var exec = require('cordova/exec');
 
-exports.powerOn = function(arg0, success, error) {
-    exec(success, error, "AsReader", "powerOn", [arg0]);
+module.exports = {
+	barcodePowerOn: function(success, error) {
+	    exec(success, error, "AsReader", "barcodePowerOn", []);
+	},
+	setBarcodeListener: function(listener){
+		exec(listener, null, "AsReader", "setBarcodeListener", []);
+	},
+	setBarcodePluggedListener: function(listener){
+		exec(listener, null, "AsReader", "setBarcodePluggedListener", []);
+	}
+	
 };
+
