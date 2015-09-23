@@ -10,6 +10,25 @@
 				<param name="ios-package" value="AsReader" />
 			</feature>
 		</config-file>
-		<source-file src="src/ios/AsReader.m" />
+		<source-file src="src/ios/AsReader.mm" />
+		<!-- AsReaderSDK -->
+		<source-file src="src/ios/RcpLib/libAreteUart.a" framework="true" />
+		<header-file src="src/ios/RcpLib/Eas.h" />
+		<header-file src="src/ios/RcpLib/PhyUtility.h" />
+		<source-file src="src/ios/RcpLib/PhyUtility.m" />
+		<header-file src="src/ios/RcpLib/RcpBarcodeApi.h.h" />
+		<header-file src="src/ios/RcpLib/RcpRfidApi.h" />
+		<header-file src="src/ios/RcpLib/UartMgr.h" />
+		
+		<framework src="ExternalAccessory.framework" />
+		
+		<config-file target="*-Info.plist" parent="UISupportedExternalAccessoryProtocols">
+			<array>
+					<string>jp.co.asx.asreader.barcode</string>
+					<string>jp.co.asx.asreader.rfid</string>
+					<string>jp.co.asx.asreader.6dongle.barcode</string>
+					<string>jp.co.asx.asreader.6dongle.rfid</string>
+				</array>
+		</config-file>
 	</platform>
 </plugin>
