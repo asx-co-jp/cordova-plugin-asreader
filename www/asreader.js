@@ -41,6 +41,7 @@
 var exec = require('cordova/exec');
 
 module.exports = {
+	/***************** BARCODE ****************/
 	barcodePowerOn: function(success, error) {
 	    exec(success, error, "AsReader", "barcodePowerOn", []);
 	},
@@ -59,13 +60,13 @@ module.exports = {
 	readBarcodeContinuously: function(success, error){
 		 exec(success, error, "AsReader", "readBarcodeContinuously", []);
 	},
-	isPlugged: function(success, error){
-		 exec(success, error, "AsReader", "isPlugged", []);
+	isBarcodePlugged: function(success, error){
+		 exec(success, error, "AsReader", "isBarcodePlugged", []);
 	},
 	getSDKVersion: function(success, error){
 		 exec(success, error, "AsReader", "getSDKVersion", []);
 	},
-	setEventListener: function(listener){
+	setEventListener: function(listener){//not used currently
 		exec(listener, null, "AsReader", "setEventListener", []);
 	},
 	setBatteryListener: function(listener){
@@ -74,11 +75,54 @@ module.exports = {
 	setReaderReadyListener: function(listener){
 		exec(listener, null, "AsReader", "setReaderReadyListener", []);
 	},
-	configure: function(success,error,beepOn,viberationOn,illuminationOn){
-		exec(success, error, "AsReader", "configure", [beepOn,viberationOn,illuminationOn]);
+	configureBarcode: function(success,error,beepOn,viberationOn,illuminationOn){
+		exec(success, error, "AsReader", "configureBarcode", [beepOn,viberationOn,illuminationOn]);
 	},
 	setEncoding: function(success, error,encoding){
 		 exec(success, error, "AsReader", "setEncoding", [encoding]);
+	},
+	/************** RFID *******************/
+	rfidPowerOn: function(success, error) {
+	    exec(success, error, "AsReader", "rfidPowerOn", []);
+	},
+	rfidPowerOff: function(success, error) {
+	    exec(success, error, "AsReader", "rfidPowerOff", []);
+	},
+	isRfidPlugged: function(success, error){
+		 exec(success, error, "AsReader", "isRfidPlugged", []);
+	},
+	configureRfid: function(success,error,beepOn,viberationOn,illuminationOn){
+		exec(success, error, "AsReader", "configureRfid", [beepOn,viberationOn,illuminationOn]);
+	},
+	setRfidPowerListener: function(listener){
+		exec(listener, null, "AsReader", "setRfidPowerListener", []);
+	},
+	setRfidPcEpcStringListener: function(listener){
+		exec(listener, null, "AsReader", "setRfidPcEpcStringListener", []);
+	},
+	setRfidEpcStringListener: function(listener){
+		exec(listener, null, "AsReader", "setRfidEpcStringListener", []);
+	},
+	setRfidPcEpcDataListener: function(listener){
+		exec(listener, null, "AsReader", "setRfidPcEpcDataListener", []);
+	},
+	setRfidEpcDataListener: function(listener){
+		exec(listener, null, "AsReader", "setRfidEpcDataListener", []);
+	},
+	setRfidPcEpcDataWithRssiListener: function(listener){
+		exec(listener, null, "AsReader", "setRfidPcEpcDataWithRssiListener", []);
+	},
+	setRfidEpcDataWithRssiListener: function(listener){
+		exec(listener, null, "AsReader", "setRfidEpcDataWithRssiListener", []);
+	},
+	setRfidPcEpcStringWithRssiListener: function(listener){
+		exec(listener, null, "AsReader", "setRfidPcEpcStringWithRssiListener", []);
+	},
+	setRfidEpcStringWithRssiListener: function(listener){
+		exec(listener, null, "AsReader", "setRfidEpcStringWithRssiListener", []);
+	},
+	setRfidPluggedListener: function(listener){
+		exec(listener, null, "AsReader", "setRfidPluggedListener", []);
 	}
 	
 };
