@@ -48,6 +48,7 @@
 
 @interface AsReader : CDVPlugin <RcpBarcodeDelegate,RcpRfidDelegate> {
   // Member variables go here.
+	NSStringEncoding _encoding;
 	BOOL plugged;
 	RcpBarcodeApi *_barcodeRcp;
 	RcpRfidApi *_rfidRcp;
@@ -61,13 +62,27 @@
 }
 
 - (void)barcodePowerOn:(CDVInvokedUrlCommand*)command;
+- (void)barcodePowerOff:(CDVInvokedUrlCommand*)command;
+- (void)readBarcode:(CDVInvokedUrlCommand*)command;
+- (void)readBarcodeContinuously:(CDVInvokedUrlCommand*)command;
+- (void)isPlugged:(CDVInvokedUrlCommand*)command;
+- (void)getSDKVersion:(CDVInvokedUrlCommand*)command;
+- (void)setBarcodeListener:(CDVInvokedUrlCommand*)command;
+- (void)setBarcodePluggedListener:(CDVInvokedUrlCommand*)command;
+- (void)setEventListener:(CDVInvokedUrlCommand*)command;
+- (void)setBatteryListener:(CDVInvokedUrlCommand*)command;
+- (void)setReaderReadyListener:(CDVInvokedUrlCommand*)command;
+- (void)configure:(CDVInvokedUrlCommand*)command;
+- (void)setEncoding:(CDVInvokedUrlCommand*)command;
 @end
 
 @implementation AsReader
 - (void)pluginInitialize
 {
+	_encoding = NSUTF8StringEncoding;
 	NSLog(@"%s,called",__PRETTY_FUNCTION__);
 	self.barcodeRcp.delegate = self;
+	
 	
 }
 - (void)barcodePowerOn:(CDVInvokedUrlCommand*)command
@@ -187,6 +202,57 @@
 	readerReadyListenerCallbackId = command.callbackId;
 	
 }
+- (void)configure:(CDVInvokedUrlCommand*)command
+{
+	uint8_t beepOn = 0xFF;
+	uint8_t vibrationOn = 0xFF;
+	uint8_t illuminationOn = 0xFF;
+	
+	if(command.arguments.count >=1 && ![@"YES" isEqualToString:[[command arguments] objectAtIndex:0]]){
+		beepOn = 0x00;
+	}
+	if(command.arguments.count >=2 && ![@"YES" isEqualToString:[[command arguments] objectAtIndex:1]]){
+		vibrationOn = 0x00;
+	}
+	if(command.arguments.count >=3 && ![@"YES" isEqualToString:[[command arguments] objectAtIndex:2]]){
+		illuminationOn = 0x00;
+	}
+	[self.barcodeRcp setBeep:beepOn setVibration:vibrationOn setIllumination:illuminationOn];
+}
+
+- (void)setEncoding:(CDVInvokedUrlCommand*)command
+{
+	
+	NSDictionary *encodingMap = [[NSDictionary alloc] initWithObjectsAndKeys:
+	    [NSString stringWithFormat:@"%d",NSASCIIStringEncoding], @"ASCII",
+	    [NSString stringWithFormat:@"%d",NSNEXTSTEPStringEncoding], @"NEXTSTEP",
+	    [NSString stringWithFormat:@"%d",NSJapaneseEUCStringEncoding], @"JapaneseEUC",
+ 	    [NSString stringWithFormat:@"%d",NSISOLatin1StringEncoding], @"ISOLatin1",
+ 	    [NSString stringWithFormat:@"%d",NSSymbolStringEncoding], @"SymbolString",
+ 	    [NSString stringWithFormat:@"%d",NSNonLossyASCIIStringEncoding], @"NonLossyASCII",
+ 	    [NSString stringWithFormat:@"%d",NSShiftJISStringEncoding], @"ShiftJIS",
+ 	    [NSString stringWithFormat:@"%d",NSISOLatin2StringEncoding], @"ISOLatin2",
+ 	    [NSString stringWithFormat:@"%d",NSUnicodeStringEncoding], @"Unicode",
+ 	    [NSString stringWithFormat:@"%d",NSWindowsCP1251StringEncoding], @"WindowsCP1251",
+ 	    [NSString stringWithFormat:@"%d",NSWindowsCP1252StringEncoding], @"WindowsCP1252",
+ 	    [NSString stringWithFormat:@"%d",NSWindowsCP1253StringEncoding], @"WindowsCP1253",
+ 	    [NSString stringWithFormat:@"%d",NSWindowsCP1254StringEncoding], @"WindowsCP1254",
+ 	    [NSString stringWithFormat:@"%d",NSWindowsCP1250StringEncoding], @"WindowsCP1250",
+ 	    [NSString stringWithFormat:@"%d",NSISO2022JPStringEncoding], @"ISO2022JP",
+ 	    [NSString stringWithFormat:@"%d",NSMacOSRomanStringEncoding], @"MacOSRoman",
+ 	    [NSString stringWithFormat:@"%d",NSUTF16StringEncoding], @"UTF16",
+ 	    [NSString stringWithFormat:@"%d",NSUTF16BigEndianStringEncoding], @"UTF16BigEndian",
+ 	    [NSString stringWithFormat:@"%d",NSUTF16LittleEndianStringEncoding], @"UTF16LittleEndian",
+ 	    [NSString stringWithFormat:@"%d",NSUTF32StringEncoding], @"UTF32String",
+ 	    [NSString stringWithFormat:@"%d",NSUTF32BigEndianStringEncoding], @"UTF32BigEndian",
+ 	    [NSString stringWithFormat:@"%d",NSUTF32LittleEndianStringEncoding], @"UTF32LittleEndian",
+ 	    [NSString stringWithFormat:@"%d",NSProprietaryStringEncoding], @"Proprietary", nil];
+		
+	if(command.arguments.count >=1 && [encodingMap objectForKey:[[command arguments] objectAtIndex:0]]){
+		_encoding = [[encodingMap objectForKey:[[command arguments] objectAtIndex:0]] intValue];
+	}
+	
+}
 
 - (void)barcodePowerOn
 {
@@ -245,7 +311,7 @@
 - (void)barcodeReceived:(NSData *)barcode{
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        NSString *value = [[NSString alloc]initWithData:barcode encoding:NSShiftJISStringEncoding];
+        NSString *value = [[NSString alloc]initWithData:barcode encoding:_encoding];
         //[self addText:value];
 		NSLog(@"barcode read:%@",value);
 		NSLog(@"%s,called",__PRETTY_FUNCTION__);

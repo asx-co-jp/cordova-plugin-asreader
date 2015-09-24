@@ -49,6 +49,33 @@ module.exports = {
 	},
 	setBarcodePluggedListener: function(listener){
 		exec(listener, null, "AsReader", "setBarcodePluggedListener", []);
+	},
+	readBarcode: function(success, error){
+		 exec(success, error, "AsReader", "readBarcode", []);
+	},
+	readBarcodeContinuously: function(success, error){
+		 exec(success, error, "AsReader", "readBarcodeContinuously", []);
+	},
+	isPlugged: function(success, error){
+		 exec(success, error, "AsReader", "isPlugged", []);
+	},
+	getSDKVersion: function(success, error){
+		 exec(success, error, "AsReader", "getSDKVersion", []);
+	},
+	setEventListener: function(listener){
+		exec(listener, null, "AsReader", "setEventListener", []);
+	},
+	setBatteryListener: function(listener){
+		exec(listener, null, "AsReader", "setBatteryListener", []);
+	},
+	setReaderReadyListener: function(listener){
+		exec(listener, null, "AsReader", "setReaderReadyListener", []);
+	},
+	configure: function(success,error,beepOn,viberationOn,illuminationOn){
+		exec(success, error, "AsReader", "configure", [beepOn,viberationOn,illuminationOn]);
+	},
+	setEncoding: function(success, error,encoding){
+		 exec(success, error, "AsReader", "setEncoding", [encoding]);
 	}
 	
 };
