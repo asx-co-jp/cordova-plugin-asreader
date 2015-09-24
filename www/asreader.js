@@ -44,8 +44,11 @@ module.exports = {
 	barcodePowerOn: function(success, error) {
 	    exec(success, error, "AsReader", "barcodePowerOn", []);
 	},
-	setBarcodeListener: function(listener){
-		exec(listener, null, "AsReader", "setBarcodeListener", []);
+	setBarcodeStringListener: function(listener){
+		exec(listener, null, "AsReader", "setBarcodeStringListener", []);
+	},
+	setBarcodeDataListener: function(listener){
+		exec(listener, null, "AsReader", "setBarcodeDataListener", []);
 	},
 	setBarcodePluggedListener: function(listener){
 		exec(listener, null, "AsReader", "setBarcodePluggedListener", []);

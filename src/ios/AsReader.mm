@@ -52,7 +52,8 @@
 	BOOL plugged;
 	RcpBarcodeApi *_barcodeRcp;
 	RcpRfidApi *_rfidRcp;
-	NSString *barcodeListenerCallbackId;
+	NSString *barcodeStringListenerCallbackId;
+	NSString *barcodeDataListenerCallbackId;
 	NSString *barcodePluggedListenerCallbackId;
 	NSString *eventListenerCallbackId;
 	NSString *batteryListenerCallbackId;
@@ -67,7 +68,8 @@
 - (void)readBarcodeContinuously:(CDVInvokedUrlCommand*)command;
 - (void)isPlugged:(CDVInvokedUrlCommand*)command;
 - (void)getSDKVersion:(CDVInvokedUrlCommand*)command;
-- (void)setBarcodeListener:(CDVInvokedUrlCommand*)command;
+- (void)setBarcodeStringListener:(CDVInvokedUrlCommand*)command;
+- (void)setBarcodeDataListener:(CDVInvokedUrlCommand*)command;
 - (void)setBarcodePluggedListener:(CDVInvokedUrlCommand*)command;
 - (void)setEventListener:(CDVInvokedUrlCommand*)command;
 - (void)setBatteryListener:(CDVInvokedUrlCommand*)command;
@@ -159,11 +161,25 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 	
-- (void)setBarcodeListener:(CDVInvokedUrlCommand*)command
+- (void)setBarcodeStringListener:(CDVInvokedUrlCommand*)command
 {
 	NSLog(@"%s,called",__PRETTY_FUNCTION__);
 	
-	barcodeListenerCallbackId = command.callbackId;
+	barcodeStringListenerCallbackId = command.callbackId;
+		
+    //CDVPluginResult* pluginResult = nil;
+
+    
+    //pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:echo];
+	//[pluginResult setKeepCallbackAsBool:YES];
+	
+    //[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}	
+- (void)setBarcodeDataListener:(CDVInvokedUrlCommand*)command
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	barcodeDataListenerCallbackId = command.callbackId;
 		
     //CDVPluginResult* pluginResult = nil;
 
@@ -316,10 +332,20 @@
 		NSLog(@"barcode read:%@",value);
 		NSLog(@"%s,called",__PRETTY_FUNCTION__);
 		CDVPluginResult* pluginResult = nil;
-		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:value];
-		[pluginResult setKeepCallbackAsBool:YES];
-	
-		[self.commandDelegate sendPluginResult:pluginResult callbackId:barcodeListenerCallbackId];
+		
+		if(barcodeStringListenerCallbackId){
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:value];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:barcodeStringListenerCallbackId];
+		}
+		
+		if(barcodeDataListenerCallbackId){
+
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArrayBuffer:barcode];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:barcodeDataListenerCallbackId];
+		}
+		
     });
 }
 
