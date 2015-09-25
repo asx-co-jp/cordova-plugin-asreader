@@ -50,7 +50,7 @@
   // Member variables go here.
 	NSStringEncoding _encoding;
 	BOOL barcodePlugged;
-    BOOL rfidPlugged;
+	BOOL rfidPlugged;
 	RcpBarcodeApi *_barcodeRcp;
 	RcpRfidApi *_rfidRcp;
 	NSString *barcodeStringListenerCallbackId;
@@ -66,10 +66,10 @@
 	NSString *rfidEpcStringListenerCallbackId;
 	NSString *rfidPcEpcDataListenerCallbackId;
 	NSString *rfidEpcDataListenerCallbackId;
-    NSString *rfidPcEpcDataWithRssiListenerCallbackId;
-    NSString *rfidEpcDataWithRssiListenerCallbackId;
-    NSString *rfidPcEpcStringWithRssiListenerCallbackId;
-    NSString *rfidEpcStringWithRssiListenerCallbackId;
+	NSString *rfidPcEpcDataWithRssiListenerCallbackId;
+	NSString *rfidEpcDataWithRssiListenerCallbackId;
+	NSString *rfidPcEpcStringWithRssiListenerCallbackId;
+	NSString *rfidEpcStringWithRssiListenerCallbackId;
 	NSString *rfidPluggedListenerCallbackId;
 }
 /*****************BARCODE*************************/
@@ -121,10 +121,10 @@
 {
 	NSLog(@"%s,called",__PRETTY_FUNCTION__);
 	
-    [self barcodePowerOn];
+	[self barcodePowerOn];
 	CDVPluginResult* pluginResult = nil;
 	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)barcodePowerOff:(CDVInvokedUrlCommand*)command
@@ -133,16 +133,16 @@
 		
 	[self barcodePowerOff];
 	CDVPluginResult* pluginResult = nil;
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 	
 	
 }
 
 - (void)setBarcodePowerListener:(CDVInvokedUrlCommand*)command{
-    NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    
-    barcodePowerListenerCallbackId = command.callbackId;
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	barcodePowerListenerCallbackId = command.callbackId;
 }
 
 - (void)readBarcode:(CDVInvokedUrlCommand*)command
@@ -156,8 +156,8 @@
 	}else{
 		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Failed to start reading process."];
 	}
-    
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 	
 	
 }
@@ -171,7 +171,7 @@
 	}else{
 		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Failed to start reading process."];
 	}
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 	
 	
 }
@@ -186,8 +186,8 @@
 	}else{
 		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Failed to stop reading process."];
 	}
-    
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 	
 	
 }
@@ -202,7 +202,7 @@
 		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"NO"];
 	}
 	
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)getSDKVersion:(CDVInvokedUrlCommand*)command
@@ -211,7 +211,7 @@
 	
 	CDVPluginResult* pluginResult = nil;
 	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self.barcodeRcp getSDKVersion]];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 	
 - (void)setBarcodeStringListener:(CDVInvokedUrlCommand*)command
@@ -220,13 +220,13 @@
 	
 	barcodeStringListenerCallbackId = command.callbackId;
 		
-    //CDVPluginResult* pluginResult = nil;
+	//CDVPluginResult* pluginResult = nil;
 
-    
-    //pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:echo];
+	
+	//pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:echo];
 	//[pluginResult setKeepCallbackAsBool:YES];
 	
-    //[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	//[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }	
 - (void)setBarcodeDataListener:(CDVInvokedUrlCommand*)command
 {
@@ -234,13 +234,13 @@
 	
 	barcodeDataListenerCallbackId = command.callbackId;
 		
-    //CDVPluginResult* pluginResult = nil;
+	//CDVPluginResult* pluginResult = nil;
 
-    
-    //pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:echo];
+	
+	//pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:echo];
 	//[pluginResult setKeepCallbackAsBool:YES];
 	
-    //[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	//[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)setBarcodePluggedListener:(CDVInvokedUrlCommand*)command
@@ -293,29 +293,29 @@
 {
 	
 	NSDictionary *encodingMap = [[NSDictionary alloc] initWithObjectsAndKeys:
-	    [NSString stringWithFormat:@"%d",NSASCIIStringEncoding], @"ASCII",
-	    [NSString stringWithFormat:@"%d",NSNEXTSTEPStringEncoding], @"NEXTSTEP",
-	    [NSString stringWithFormat:@"%d",NSJapaneseEUCStringEncoding], @"JapaneseEUC",
- 	    [NSString stringWithFormat:@"%d",NSISOLatin1StringEncoding], @"ISOLatin1",
- 	    [NSString stringWithFormat:@"%d",NSSymbolStringEncoding], @"SymbolString",
- 	    [NSString stringWithFormat:@"%d",NSNonLossyASCIIStringEncoding], @"NonLossyASCII",
- 	    [NSString stringWithFormat:@"%d",NSShiftJISStringEncoding], @"ShiftJIS",
- 	    [NSString stringWithFormat:@"%d",NSISOLatin2StringEncoding], @"ISOLatin2",
- 	    [NSString stringWithFormat:@"%d",NSUnicodeStringEncoding], @"Unicode",
- 	    [NSString stringWithFormat:@"%d",NSWindowsCP1251StringEncoding], @"WindowsCP1251",
- 	    [NSString stringWithFormat:@"%d",NSWindowsCP1252StringEncoding], @"WindowsCP1252",
- 	    [NSString stringWithFormat:@"%d",NSWindowsCP1253StringEncoding], @"WindowsCP1253",
- 	    [NSString stringWithFormat:@"%d",NSWindowsCP1254StringEncoding], @"WindowsCP1254",
- 	    [NSString stringWithFormat:@"%d",NSWindowsCP1250StringEncoding], @"WindowsCP1250",
- 	    [NSString stringWithFormat:@"%d",NSISO2022JPStringEncoding], @"ISO2022JP",
- 	    [NSString stringWithFormat:@"%d",NSMacOSRomanStringEncoding], @"MacOSRoman",
- 	    [NSString stringWithFormat:@"%d",NSUTF16StringEncoding], @"UTF16",
- 	    [NSString stringWithFormat:@"%d",NSUTF16BigEndianStringEncoding], @"UTF16BigEndian",
- 	    [NSString stringWithFormat:@"%d",NSUTF16LittleEndianStringEncoding], @"UTF16LittleEndian",
- 	    [NSString stringWithFormat:@"%d",NSUTF32StringEncoding], @"UTF32String",
- 	    [NSString stringWithFormat:@"%d",NSUTF32BigEndianStringEncoding], @"UTF32BigEndian",
- 	    [NSString stringWithFormat:@"%d",NSUTF32LittleEndianStringEncoding], @"UTF32LittleEndian",
- 	    [NSString stringWithFormat:@"%d",NSProprietaryStringEncoding], @"Proprietary", nil];
+		[NSString stringWithFormat:@"%d",NSASCIIStringEncoding], @"ASCII",
+		[NSString stringWithFormat:@"%d",NSNEXTSTEPStringEncoding], @"NEXTSTEP",
+		[NSString stringWithFormat:@"%d",NSJapaneseEUCStringEncoding], @"JapaneseEUC",
+ 		[NSString stringWithFormat:@"%d",NSISOLatin1StringEncoding], @"ISOLatin1",
+ 		[NSString stringWithFormat:@"%d",NSSymbolStringEncoding], @"SymbolString",
+ 		[NSString stringWithFormat:@"%d",NSNonLossyASCIIStringEncoding], @"NonLossyASCII",
+ 		[NSString stringWithFormat:@"%d",NSShiftJISStringEncoding], @"ShiftJIS",
+ 		[NSString stringWithFormat:@"%d",NSISOLatin2StringEncoding], @"ISOLatin2",
+ 		[NSString stringWithFormat:@"%d",NSUnicodeStringEncoding], @"Unicode",
+ 		[NSString stringWithFormat:@"%d",NSWindowsCP1251StringEncoding], @"WindowsCP1251",
+ 		[NSString stringWithFormat:@"%d",NSWindowsCP1252StringEncoding], @"WindowsCP1252",
+ 		[NSString stringWithFormat:@"%d",NSWindowsCP1253StringEncoding], @"WindowsCP1253",
+ 		[NSString stringWithFormat:@"%d",NSWindowsCP1254StringEncoding], @"WindowsCP1254",
+ 		[NSString stringWithFormat:@"%d",NSWindowsCP1250StringEncoding], @"WindowsCP1250",
+ 		[NSString stringWithFormat:@"%d",NSISO2022JPStringEncoding], @"ISO2022JP",
+ 		[NSString stringWithFormat:@"%d",NSMacOSRomanStringEncoding], @"MacOSRoman",
+ 		[NSString stringWithFormat:@"%d",NSUTF16StringEncoding], @"UTF16",
+ 		[NSString stringWithFormat:@"%d",NSUTF16BigEndianStringEncoding], @"UTF16BigEndian",
+ 		[NSString stringWithFormat:@"%d",NSUTF16LittleEndianStringEncoding], @"UTF16LittleEndian",
+ 		[NSString stringWithFormat:@"%d",NSUTF32StringEncoding], @"UTF32String",
+ 		[NSString stringWithFormat:@"%d",NSUTF32BigEndianStringEncoding], @"UTF32BigEndian",
+ 		[NSString stringWithFormat:@"%d",NSUTF32LittleEndianStringEncoding], @"UTF32LittleEndian",
+ 		[NSString stringWithFormat:@"%d",NSProprietaryStringEncoding], @"Proprietary", nil];
 		
 	if(command.arguments.count >=1 && [encodingMap objectForKey:[[command arguments] objectAtIndex:0]]){
 		_encoding = [[encodingMap objectForKey:[[command arguments] objectAtIndex:0]] intValue];
@@ -327,61 +327,61 @@
 {
 	NSLog(@"%s,called",__PRETTY_FUNCTION__);
 
-    dispatch_async(dispatch_get_main_queue(),^{
-        //_statusLabel.text = @"Plugged";
-        [self.barcodeRcp open];
-        BOOL rtn = [self.barcodeRcp setReaderPower:YES];
+	dispatch_async(dispatch_get_main_queue(),^{
+		//_statusLabel.text = @"Plugged";
+		[self.barcodeRcp open];
+		BOOL rtn = [self.barcodeRcp setReaderPower:YES];
 		
 		if(rtn && barcodePowerListenerCallbackId){
 			CDVPluginResult* pluginResult = nil;
 			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"ON"];
 			[pluginResult setKeepCallbackAsBool:YES];
-		    [self.commandDelegate sendPluginResult:pluginResult callbackId:barcodePowerListenerCallbackId];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:barcodePowerListenerCallbackId];
 		}
 		
-    });
+	});
 	
 }
 
 - (void)barcodePowerOff
 {
-	NSLog(@"%s,called",__PRETTY_FUNCTION__);    
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);	
 
-    dispatch_async(dispatch_get_main_queue(),^{
-        //_statusLabel.text = @"Unplugged";
-        BOOL rtn = [self.barcodeRcp setReaderPower:NO];
-        [self.barcodeRcp close];
+	dispatch_async(dispatch_get_main_queue(),^{
+		//_statusLabel.text = @"Unplugged";
+		BOOL rtn = [self.barcodeRcp setReaderPower:NO];
+		[self.barcodeRcp close];
 		
 		if(rtn && barcodePowerListenerCallbackId){
 			CDVPluginResult* pluginResult = nil;
 			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"OFF"];
 			[pluginResult setKeepCallbackAsBool:YES];
-		    [self.commandDelegate sendPluginResult:pluginResult callbackId:barcodePowerListenerCallbackId];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:barcodePowerListenerCallbackId];
 		}
 		
-    });	
+	});	
 	
 }
 
 
 - (RcpBarcodeApi *)barcodeRcp{
 	NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    static dispatch_once_t pred = 0;
-    __strong static id _sharedObject = nil;
-    
-    dispatch_once(&pred,^{
-        _sharedObject = [[RcpBarcodeApi alloc] init];
-        _barcodeRcp = _sharedObject;
-        _barcodeRcp.delegate = self;
-    });
-    return _sharedObject;
+	static dispatch_once_t pred = 0;
+	__strong static id _sharedObject = nil;
+	
+	dispatch_once(&pred,^{
+		_sharedObject = [[RcpBarcodeApi alloc] init];
+		_barcodeRcp = _sharedObject;
+		_barcodeRcp.delegate = self;
+	});
+	return _sharedObject;
 }
 
 - (void)barcodeReceived:(NSData *)barcode{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        NSString *value = [[NSString alloc]initWithData:barcode encoding:_encoding];
-        //[self addText:value];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		
+		NSString *value = [[NSString alloc]initWithData:barcode encoding:_encoding];
+		//[self addText:value];
 		NSLog(@"barcode read:%@",value);
 		NSLog(@"%s,called",__PRETTY_FUNCTION__);
 		CDVPluginResult* pluginResult = nil;
@@ -399,19 +399,19 @@
 			[self.commandDelegate sendPluginResult:pluginResult callbackId:barcodeDataListenerCallbackId];
 		}
 		
-    });
+	});
 }
 
 - (void)pluggedBarcode:(BOOL)plug{
-    barcodePlugged = plug;
-    CDVPluginResult* pluginResult = nil;
-    NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    
-    if(plug){
+	barcodePlugged = plug;
+	CDVPluginResult* pluginResult = nil;
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	if(plug){
 		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"YES"];
-    }else{
+	}else{
 		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"NO"];
-    }
+	}
 	
 	[pluginResult setKeepCallbackAsBool:YES];
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:barcodePluggedListenerCallbackId];
@@ -420,7 +420,7 @@
 - (void)batteryChargeReceived:(int)battery{
 	CDVPluginResult* pluginResult = nil;
 	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:battery];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:batteryListenerCallbackId];
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:batteryListenerCallbackId];
 }
 - (void)readerConnected:(uint8_t)status{
 	CDVPluginResult* pluginResult = nil;
@@ -434,170 +434,170 @@
 }	
 
 - (BOOL)readBarcode{
-    if ([self.barcodeRcp isOpened]) {
-        return [self.barcodeRcp startReadBarcodes:0x00 mtime:0x00 repeatCycle:0x00];
-    }
+	if ([self.barcodeRcp isOpened]) {
+		return [self.barcodeRcp startReadBarcodes:0x00 mtime:0x00 repeatCycle:0x00];
+	}
 	return NO;
 }
 - (BOOL)readBarcodeContinuously{
-    if ([self.barcodeRcp isOpened]) {
-        return [self.barcodeRcp startReadBarcodes:0xFF mtime:0xFF repeatCycle:0xFF];
-    }
+	if ([self.barcodeRcp isOpened]) {
+		return [self.barcodeRcp startReadBarcodes:0xFF mtime:0xFF repeatCycle:0xFF];
+	}
 	return NO;
 }
 
 - (BOOL)stopReadBarcode{
-    if ([self.barcodeRcp isOpened]) {
-        return [self.barcodeRcp stopReadBarcodes];
-    }
+	if ([self.barcodeRcp isOpened]) {
+		return [self.barcodeRcp stopReadBarcodes];
+	}
 	return NO;
 }
 
 /**********************************************
-                 RFID
+				 RFID
  */
 
 
 /************ PUBLIC ****************/
 
 - (void)rfidPowerOn:(CDVInvokedUrlCommand*)command{
-    NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    
-    [self rfidPowerOn];
-    CDVPluginResult* pluginResult = nil;
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	[self rfidPowerOn];
+	CDVPluginResult* pluginResult = nil;
+	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 - (void)rfidPowerOff:(CDVInvokedUrlCommand*)command{
-    NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    
-    [self rfidPowerOff];
-    CDVPluginResult* pluginResult = nil;
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	[self rfidPowerOff];
+	CDVPluginResult* pluginResult = nil;
+	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 - (void)startReadTags:(CDVInvokedUrlCommand*)command{
-    NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    
-    [self startReadTags:0 mtime:0 repeatCycle:0];
-    CDVPluginResult* pluginResult = nil;
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	[self startReadTags:0 mtime:0 repeatCycle:0];
+	CDVPluginResult* pluginResult = nil;
+	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)stopReadTags:(CDVInvokedUrlCommand*)command{
-    NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    
-    [self stopReadTags];
-    CDVPluginResult* pluginResult = nil;
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	[self stopReadTags];
+	CDVPluginResult* pluginResult = nil;
+	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)isRfidPlugged:(CDVInvokedUrlCommand*)command{
-    NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    
-    CDVPluginResult* pluginResult = nil;
-    if(rfidPlugged){
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"YES"];
-    }else{
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"NO"];
-    }
-    
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	CDVPluginResult* pluginResult = nil;
+	if(rfidPlugged){
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"YES"];
+	}else{
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"NO"];
+	}
+	
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 - (void)configureRfid:(CDVInvokedUrlCommand*)command{
-    uint8_t beepOn = 0xFF;
-    uint8_t vibrationOn = 0xFF;
-    uint8_t illuminationOn = 0xFF;
-    
-    if(command.arguments.count >=1 && ![@"YES" isEqualToString:[[command arguments] objectAtIndex:0]]){
-        beepOn = 0x00;
-    }
-    if(command.arguments.count >=2 && ![@"YES" isEqualToString:[[command arguments] objectAtIndex:1]]){
-        vibrationOn = 0x00;
-    }
-    if(command.arguments.count >=3 && ![@"YES" isEqualToString:[[command arguments] objectAtIndex:2]]){
-        illuminationOn = 0x00;
-    }
-    [self.rfidRcp setBeep:beepOn setVibration:vibrationOn setIllumination:illuminationOn];
+	uint8_t beepOn = 0xFF;
+	uint8_t vibrationOn = 0xFF;
+	uint8_t illuminationOn = 0xFF;
+	
+	if(command.arguments.count >=1 && ![@"YES" isEqualToString:[[command arguments] objectAtIndex:0]]){
+		beepOn = 0x00;
+	}
+	if(command.arguments.count >=2 && ![@"YES" isEqualToString:[[command arguments] objectAtIndex:1]]){
+		vibrationOn = 0x00;
+	}
+	if(command.arguments.count >=3 && ![@"YES" isEqualToString:[[command arguments] objectAtIndex:2]]){
+		illuminationOn = 0x00;
+	}
+	[self.rfidRcp setBeep:beepOn setVibration:vibrationOn setIllumination:illuminationOn];
 }
 
 - (void)setRfidPowerListener:(CDVInvokedUrlCommand*)command{
-    NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    
-    rfidPowerListenerCallbackId = command.callbackId;
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	rfidPowerListenerCallbackId = command.callbackId;
 }
 
 - (void)setRfidPcEpcStringListener:(CDVInvokedUrlCommand*)command{
-    NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    
-    rfidPcEpcStringListenerCallbackId = command.callbackId;
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	rfidPcEpcStringListenerCallbackId = command.callbackId;
 }
 
 - (void)setRfidEpcStringListener:(CDVInvokedUrlCommand*)command{
-    NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    
-    rfidEpcStringListenerCallbackId = command.callbackId;
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	rfidEpcStringListenerCallbackId = command.callbackId;
 }
 
 - (void)setRfidPcEpcDataListener:(CDVInvokedUrlCommand*)command{
-    
-    NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    
-    rfidPcEpcDataListenerCallbackId = command.callbackId;
+	
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	rfidPcEpcDataListenerCallbackId = command.callbackId;
 }
 
 - (void)setRfidEpcDataListener:(CDVInvokedUrlCommand*)command{
-    
-    NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    
-    rfidEpcDataListenerCallbackId = command.callbackId;
-    
+	
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	rfidEpcDataListenerCallbackId = command.callbackId;
+	
 }
 
 - (void)setRfidPcEpcDataWithRssiListener:(CDVInvokedUrlCommand*)command{
-    
-    
-    NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    
-    rfidPcEpcDataWithRssiListenerCallbackId = command.callbackId;
+	
+	
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	rfidPcEpcDataWithRssiListenerCallbackId = command.callbackId;
 
 }
 
 - (void)setRfidEpcDataWithRssiListener:(CDVInvokedUrlCommand*)command{
-    
-    NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    
-    rfidEpcDataWithRssiListenerCallbackId = command.callbackId;
+	
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	rfidEpcDataWithRssiListenerCallbackId = command.callbackId;
 
-    
+	
 }
 
 - (void)setRfidPcEpcStringWithRssiListener:(CDVInvokedUrlCommand*)command{
-    
-    NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    
-    rfidPcEpcStringWithRssiListenerCallbackId = command.callbackId;
+	
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	rfidPcEpcStringWithRssiListenerCallbackId = command.callbackId;
 
-    
+	
 }
 
 - (void)setRfidEpcStringWithRssiListener:(CDVInvokedUrlCommand*)command{
-    
-    NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    
-    rfidEpcStringWithRssiListenerCallbackId = command.callbackId;
+	
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	rfidEpcStringWithRssiListenerCallbackId = command.callbackId;
 
-    
+	
 }
 
 - (void)setRfidPluggedListener:(CDVInvokedUrlCommand*)command{
-    
-    
-    NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    
-    rfidPluggedListenerCallbackId = command.callbackId;
+	
+	
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	rfidPluggedListenerCallbackId = command.callbackId;
 }
 
 
@@ -605,27 +605,27 @@
 
 - (RcpRfidApi *)rfidRcp{
 	NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    static dispatch_once_t pred = 0;
-    __strong static id _sharedObject = nil;
-    
-    dispatch_once(&pred,^{
-        _sharedObject = [[RcpRfidApi alloc] init];
-        _rfidRcp = _sharedObject;
-        _rfidRcp.delegate = self;
-    });
-    return _sharedObject;
+	static dispatch_once_t pred = 0;
+	__strong static id _sharedObject = nil;
+	
+	dispatch_once(&pred,^{
+		_sharedObject = [[RcpRfidApi alloc] init];
+		_rfidRcp = _sharedObject;
+		_rfidRcp.delegate = self;
+	});
+	return _sharedObject;
 }
 
 - (void)pluggedRfid:(BOOL)plug{
-    rfidPlugged = plug;
-    CDVPluginResult* pluginResult = nil;
-    NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    
-    if(plug){
+	rfidPlugged = plug;
+	CDVPluginResult* pluginResult = nil;
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	if(plug){
 		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"YES"];
-    }else{
+	}else{
 		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"NO"];
-    }
+	}
 	NSLog(@"rfidPluggedListenerCallbackId:%s",rfidPluggedListenerCallbackId);
 	if(rfidPluggedListenerCallbackId){
 		[pluginResult setKeepCallbackAsBool:YES];
@@ -638,74 +638,74 @@
 {
 	NSLog(@"%s,called",__PRETTY_FUNCTION__);
 
-    dispatch_async(dispatch_get_main_queue(),^{
-        //_statusLabel.text = @"Plugged";
-        [self.rfidRcp open];
-        BOOL rtn = [self.rfidRcp setReaderPower:YES];
+	dispatch_async(dispatch_get_main_queue(),^{
+		//_statusLabel.text = @"Plugged";
+		[self.rfidRcp open];
+		BOOL rtn = [self.rfidRcp setReaderPower:YES];
 		
 		if(rtn && rfidPowerListenerCallbackId){
 			CDVPluginResult* pluginResult = nil;
 			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"ON"];
 			[pluginResult setKeepCallbackAsBool:YES];
-		    [self.commandDelegate sendPluginResult:pluginResult callbackId:rfidPowerListenerCallbackId];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:rfidPowerListenerCallbackId];
 		}
 		
-    });
+	});
 	
 }
 
 - (void)rfidPowerOff
 {
-	NSLog(@"%s,called",__PRETTY_FUNCTION__);    
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);	
 
-    dispatch_async(dispatch_get_main_queue(),^{
-        //_statusLabel.text = @"Unplugged";
-        BOOL rtn = [self.rfidRcp setReaderPower:NO];
-        [self.rfidRcp close];
+	dispatch_async(dispatch_get_main_queue(),^{
+		//_statusLabel.text = @"Unplugged";
+		BOOL rtn = [self.rfidRcp setReaderPower:NO];
+		[self.rfidRcp close];
 		
 		if(rtn && rfidPowerListenerCallbackId){
 			CDVPluginResult* pluginResult = nil;
 			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"OFF"];
 			[pluginResult setKeepCallbackAsBool:YES];
-		    [self.commandDelegate sendPluginResult:pluginResult callbackId:rfidPowerListenerCallbackId];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:rfidPowerListenerCallbackId];
 		}
 		
-    });	
+	});	
 	
 }
 - (BOOL)startReadTags:(uint8_t)mtnu mtime:(uint8_t)mtime repeatCycle:(uint16_t)repeatCycle
 {
-    NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    
-    return [self.rfidRcp startReadTags:mtnu mtime:mtime repeatCycle:repeatCycle];
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	return [self.rfidRcp startReadTags:mtnu mtime:mtime repeatCycle:repeatCycle];
 }
 
 - (BOOL)startReadTagsWithRssi:(uint8_t)mtnu mtime:(uint8_t)mtime repeatCycle:(uint16_t)repeatCycle
 {
-    NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    
-    return [self.rfidRcp startReadTagsWithRssi:mtnu mtime:mtime repeatCycle:repeatCycle];
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	return [self.rfidRcp startReadTagsWithRssi:mtnu mtime:mtime repeatCycle:repeatCycle];
 }
 
 - (BOOL)stopReadTags
 {
-    return [self.rfidRcp stopReadTags];
+	return [self.rfidRcp stopReadTags];
 }
 
 - (void)pcEpcReceived:(NSData*)pcEpc
 {
 	NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    dispatch_async(dispatch_get_main_queue(),^{
-        
-        CDVPluginResult* pluginResult = nil;
-        
-        if(rfidPcEpcDataListenerCallbackId){
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArrayBuffer:pcEpc];
-            [pluginResult setKeepCallbackAsBool:YES];
-            [self.commandDelegate sendPluginResult:pluginResult callbackId:rfidPcEpcDataListenerCallbackId];
-        }
-        
-        //NSString *value = [[NSString alloc]initWithData:pcEpc encoding:_encoding];
+	dispatch_async(dispatch_get_main_queue(),^{
+		
+		CDVPluginResult* pluginResult = nil;
+		
+		if(rfidPcEpcDataListenerCallbackId){
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArrayBuffer:pcEpc];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:rfidPcEpcDataListenerCallbackId];
+		}
+		
+		//NSString *value = [[NSString alloc]initWithData:pcEpc encoding:_encoding];
 		NSString *hexStr = nil;
 		NSMutableString* tmp = [[NSMutableString alloc] init];
 		unsigned char* ptr= (unsigned char*) [pcEpc bytes];
@@ -714,89 +714,89 @@
 		}
 		hexStr = tmp;
 				
-        if(rfidPcEpcStringListenerCallbackId){
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:hexStr];
-            [pluginResult setKeepCallbackAsBool:YES];
-            [self.commandDelegate sendPluginResult:pluginResult callbackId:rfidPcEpcStringListenerCallbackId];
-        }
-        
-        
-    });
+		if(rfidPcEpcStringListenerCallbackId){
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:hexStr];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:rfidPcEpcStringListenerCallbackId];
+		}
+		
+		
+	});
 
 }
 
 - (void)epcReceived:(NSData*)epc
 {
-    NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    dispatch_async(dispatch_get_main_queue(),^{
-        
-        CDVPluginResult* pluginResult = nil;
-        
-        if(rfidEpcDataListenerCallbackId){
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArrayBuffer:epc];
-            [pluginResult setKeepCallbackAsBool:YES];
-            [self.commandDelegate sendPluginResult:pluginResult callbackId:rfidEpcDataListenerCallbackId];
-        }
-        
-        NSString *value = [[NSString alloc]initWithData:epc encoding:_encoding];
-        
-        if(rfidEpcStringListenerCallbackId){
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:value];
-            [pluginResult setKeepCallbackAsBool:YES];
-            [self.commandDelegate sendPluginResult:pluginResult callbackId:rfidEpcStringListenerCallbackId];
-        }
-        
-        
-    });
-    
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	dispatch_async(dispatch_get_main_queue(),^{
+		
+		CDVPluginResult* pluginResult = nil;
+		
+		if(rfidEpcDataListenerCallbackId){
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArrayBuffer:epc];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:rfidEpcDataListenerCallbackId];
+		}
+		
+		NSString *value = [[NSString alloc]initWithData:epc encoding:_encoding];
+		
+		if(rfidEpcStringListenerCallbackId){
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:value];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:rfidEpcStringListenerCallbackId];
+		}
+		
+		
+	});
+	
 }
 - (void)pcEpcRssiReceived:(NSData *)pcEpc rssi:(int8_t)rssi
 {
-    NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    dispatch_async(dispatch_get_main_queue(),^{
-        
-        CDVPluginResult* pluginResult = nil;
-        
-        if(rfidPcEpcDataWithRssiListenerCallbackId){
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:[[NSDictionary alloc] initWithObjectsAndKeys:pcEpc,@"PcEpc",[NSString stringWithFormat:@"%d",rssi],@"Rssi",nil]];
-            [pluginResult setKeepCallbackAsBool:YES];
-            [self.commandDelegate sendPluginResult:pluginResult callbackId:rfidPcEpcDataWithRssiListenerCallbackId];
-        }
-        
-        NSString *value = [[NSString alloc]initWithData:pcEpc encoding:_encoding];
-        
-        if(rfidPcEpcStringWithRssiListenerCallbackId){
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:[[NSDictionary alloc] initWithObjectsAndKeys:value,@"PcEpc",[NSString stringWithFormat:@"%d",rssi],@"Rssi",nil]];
-            [pluginResult setKeepCallbackAsBool:YES];
-            [self.commandDelegate sendPluginResult:pluginResult callbackId:rfidPcEpcStringWithRssiListenerCallbackId];
-        }
-        
-        
-    });
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	dispatch_async(dispatch_get_main_queue(),^{
+		
+		CDVPluginResult* pluginResult = nil;
+		
+		if(rfidPcEpcDataWithRssiListenerCallbackId){
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:[[NSDictionary alloc] initWithObjectsAndKeys:pcEpc,@"PcEpc",[NSString stringWithFormat:@"%d",rssi],@"Rssi",nil]];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:rfidPcEpcDataWithRssiListenerCallbackId];
+		}
+		
+		NSString *value = [[NSString alloc]initWithData:pcEpc encoding:_encoding];
+		
+		if(rfidPcEpcStringWithRssiListenerCallbackId){
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:[[NSDictionary alloc] initWithObjectsAndKeys:value,@"PcEpc",[NSString stringWithFormat:@"%d",rssi],@"Rssi",nil]];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:rfidPcEpcStringWithRssiListenerCallbackId];
+		}
+		
+		
+	});
 }
 
 - (void)epcRssiReceived:(NSData *)epc rssi:(int8_t)rssi
 {
-    NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    dispatch_async(dispatch_get_main_queue(),^{
-        
-        CDVPluginResult* pluginResult = nil;
-        
-        if(rfidEpcDataWithRssiListenerCallbackId){
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:[[NSDictionary alloc] initWithObjectsAndKeys:epc,@"Epc",[NSString stringWithFormat:@"%d",rssi],@"Rssi",nil]];
-            [pluginResult setKeepCallbackAsBool:YES];
-            [self.commandDelegate sendPluginResult:pluginResult callbackId:rfidEpcDataWithRssiListenerCallbackId];
-        }
-        
-        NSString *value = [[NSString alloc]initWithData:epc encoding:_encoding];
-        
-        if(rfidEpcStringWithRssiListenerCallbackId){
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:[[NSDictionary alloc] initWithObjectsAndKeys:value,@"Epc",[NSString stringWithFormat:@"%d",rssi],@"Rssi",nil]];
-            [pluginResult setKeepCallbackAsBool:YES];
-            [self.commandDelegate sendPluginResult:pluginResult callbackId:rfidEpcStringWithRssiListenerCallbackId];
-        }
-        
-        
-    });
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	dispatch_async(dispatch_get_main_queue(),^{
+		
+		CDVPluginResult* pluginResult = nil;
+		
+		if(rfidEpcDataWithRssiListenerCallbackId){
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:[[NSDictionary alloc] initWithObjectsAndKeys:epc,@"Epc",[NSString stringWithFormat:@"%d",rssi],@"Rssi",nil]];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:rfidEpcDataWithRssiListenerCallbackId];
+		}
+		
+		NSString *value = [[NSString alloc]initWithData:epc encoding:_encoding];
+		
+		if(rfidEpcStringWithRssiListenerCallbackId){
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:[[NSDictionary alloc] initWithObjectsAndKeys:value,@"Epc",[NSString stringWithFormat:@"%d",rssi],@"Rssi",nil]];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:rfidEpcStringWithRssiListenerCallbackId];
+		}
+		
+		
+	});
 }
 @end
