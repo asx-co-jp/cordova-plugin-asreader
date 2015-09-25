@@ -99,6 +99,7 @@
 - (BOOL)setRssiOffset;
 - (BOOL)setOptimumFrequencyHoppingTable;
 - (BOOL)SetFrequencyHoppingMode:(uint8_t)mode;
+- (BOOL)updateRegistry:(uint8_t)update;
 @property (nonatomic, assign) BOOL isConnected;
 @property (nonatomic, weak) id<RcpRfidDelegate> delegate;
 @end
@@ -107,6 +108,8 @@
 @optional
 - (void)pluggedRfid:(BOOL)plug;
 - (void)pcEpcReceived:(NSData *)pcEpc;
+- (void)epcReceived:(NSData *)epc;
+- (void)epcReceived:(NSData *)epc rssi:(int8_t)rssi;
 - (void)pcEpcRssiReceived:(NSData *)pcEpc rssi:(int8_t)rssi;
 - (void)readerConnected:(uint8_t)status;
 - (void)readerConnected;
@@ -129,7 +132,7 @@
 - (void)batteryChargeReceived:(int)battery;
 - (void)genericReceived:(NSData*)data;
 - (void)startedReadTags:(uint8_t)statusCode;
-
+- (void)responseSetPwr:(uint8_t)status;
 - (void)writedReceived:(uint8_t)statusCode;
 - (void)stoppedReadTags:(uint8_t)statusCode;
 - (void)lockedReceived:(uint8_t)statusCode;
