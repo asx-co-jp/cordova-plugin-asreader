@@ -43,10 +43,10 @@ var exec = require('cordova/exec');
 module.exports = {
 	/***************** BARCODE ****************/
 	barcodePowerOn: function(success, error) {
-	    exec(success, error, "AsReader", "barcodePowerOn", []);
+		exec(success, error, "AsReader", "barcodePowerOn", []);
 	},
 	barcodePowerOff: function(success, error) {
-	    exec(success, error, "AsReader", "barcodePowerOff", []);
+		exec(success, error, "AsReader", "barcodePowerOff", []);
 	},
 	setBarcodePowerListener: function(listener){
 		exec(listener, null, "AsReader", "setBarcodePowerListener", []);
@@ -89,10 +89,10 @@ module.exports = {
 	},
 	/************** RFID *******************/
 	rfidPowerOn: function(success, error) {
-	    exec(success, error, "AsReader", "rfidPowerOn", []);
+		exec(success, error, "AsReader", "rfidPowerOn", []);
 	},
 	rfidPowerOff: function(success, error) {
-	    exec(success, error, "AsReader", "rfidPowerOff", []);
+		exec(success, error, "AsReader", "rfidPowerOff", []);
 	},
 	isRfidPlugged: function(success, error){
 		 exec(success, error, "AsReader", "isRfidPlugged", []);
@@ -101,10 +101,10 @@ module.exports = {
 		exec(success, error, "AsReader", "configureRfid", [beepOn,viberationOn,illuminationOn]);
 	},
 	startReadTags: function(success, error) {
-	    exec(success, error, "AsReader", "startReadTags", []);
+		exec(success, error, "AsReader", "startReadTags", []);
 	},
 	stopReadTags: function(success, error) {
-	    exec(success, error, "AsReader", "stopReadTags", []);
+		exec(success, error, "AsReader", "stopReadTags", []);
 	},
 	setRfidPowerListener: function(listener){
 		exec(listener, null, "AsReader", "setRfidPowerListener", []);
