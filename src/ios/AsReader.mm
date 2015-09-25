@@ -75,8 +75,10 @@
 /*****************BARCODE*************************/
 - (void)barcodePowerOn:(CDVInvokedUrlCommand*)command;
 - (void)barcodePowerOff:(CDVInvokedUrlCommand*)command;
+- (void)setBarcodePowerListener:(CDVInvokedUrlCommand*)command;
 - (void)readBarcode:(CDVInvokedUrlCommand*)command;
 - (void)readBarcodeContinuously:(CDVInvokedUrlCommand*)command;
+- (void)stopReadBarcode:(CDVInvokedUrlCommand*)command;
 - (void)isBarcodePlugged:(CDVInvokedUrlCommand*)command;
 - (void)getSDKVersion:(CDVInvokedUrlCommand*)command;
 - (void)setBarcodeStringListener:(CDVInvokedUrlCommand*)command;
@@ -136,6 +138,13 @@
 	
 	
 }
+
+- (void)setBarcodePowerListener:(CDVInvokedUrlCommand*)command{
+    NSLog(@"%s,called",__PRETTY_FUNCTION__);
+    
+    barcodePowerListenerCallbackId = command.callbackId;
+}
+
 - (void)readBarcode:(CDVInvokedUrlCommand*)command
 {
 	NSLog(@"%s,called",__PRETTY_FUNCTION__);
@@ -162,6 +171,22 @@
 	}else{
 		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Failed to start reading process."];
 	}
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	
+	
+}
+- (void)stopReadBarcode:(CDVInvokedUrlCommand*)command
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+
+	CDVPluginResult* pluginResult = nil;
+	
+	if([self stopReadBarcode]){
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+	}else{
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Failed to stop reading process."];
+	}
+    
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 	
 	
@@ -451,6 +476,24 @@
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
+- (void)startReadTags:(CDVInvokedUrlCommand*)command{
+    NSLog(@"%s,called",__PRETTY_FUNCTION__);
+    
+    [self startReadTags:0 mtime:0 repeatCycle:0];
+    CDVPluginResult* pluginResult = nil;
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)stopReadTags:(CDVInvokedUrlCommand*)command{
+    NSLog(@"%s,called",__PRETTY_FUNCTION__);
+    
+    [self stopReadTags];
+    CDVPluginResult* pluginResult = nil;
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 - (void)isRfidPlugged:(CDVInvokedUrlCommand*)command{
     NSLog(@"%s,called",__PRETTY_FUNCTION__);
     

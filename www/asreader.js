@@ -45,6 +45,12 @@ module.exports = {
 	barcodePowerOn: function(success, error) {
 	    exec(success, error, "AsReader", "barcodePowerOn", []);
 	},
+	barcodePowerOff: function(success, error) {
+	    exec(success, error, "AsReader", "barcodePowerOff", []);
+	},
+	setBarcodePowerListener: function(listener){
+		exec(listener, null, "AsReader", "setBarcodePowerListener", []);
+	},
 	setBarcodeStringListener: function(listener){
 		exec(listener, null, "AsReader", "setBarcodeStringListener", []);
 	},
@@ -93,6 +99,12 @@ module.exports = {
 	},
 	configureRfid: function(success,error,beepOn,viberationOn,illuminationOn){
 		exec(success, error, "AsReader", "configureRfid", [beepOn,viberationOn,illuminationOn]);
+	},
+	startReadTags: function(success, error) {
+	    exec(success, error, "AsReader", "startReadTags", []);
+	},
+	stopReadTags: function(success, error) {
+	    exec(success, error, "AsReader", "stopReadTags", []);
 	},
 	setRfidPowerListener: function(listener){
 		exec(listener, null, "AsReader", "setRfidPowerListener", []);
