@@ -6,6 +6,8 @@ cordova plugin for AsReader
 You can find a sample code here
 https://github.com/asx-co-jp/cordova-plugin-asreader-demo
 
+For detailed information about type of parameters of interfaces, please refere to the file RcpRfidApi.h and RcpBarcodeApi.h
+
 # Issues & Contributions
 This plugin is open for everyone. You are welcome to raise issues here. Bug fixes and pull requests will also be deeply appreciated.
 
