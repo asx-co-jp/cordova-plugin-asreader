@@ -71,6 +71,28 @@
 	NSString *_rfidPcEpcStringWithRssiListenerCallbackId;
 	NSString *_rfidEpcStringWithRssiListenerCallbackId;
 	NSString *_rfidPluggedListenerCallbackId;
+	NSString *_rfidRegionListenerCallbackId;
+	NSString *_rfidRegionSettedListenerCallbackId;
+	NSString *_rfidReaderInfoListenerCallbackId;
+	NSString *_rfidSelectParamReceivedListenerCallbackId;
+	NSString *_rfidSelectParamSettedListenerCallbackId;
+	NSString *_rfidQueryParamReceivedListenerCallbackId;
+	NSString *_rfidQueryParamSettedListenerCallbackId;
+	NSString *_rfidChannelReceivedListenerCallbackId;
+	NSString *_rfidChannelSettedListenerCallbackId;
+	NSString *_rfidFhLbtParamListenerCallbackId;
+	NSString *_rfidFhLbtSettedListenerCallbackId;
+	NSString *_rfidOutputPowerLevelListenerCallbackId;
+	NSString *_rfidOutputPowerLevelSettedListenerCallbackId;
+	NSString *_rfidRFCwSettedListenerCallbackId;
+	NSString *_rfidTagMemoryReceivedListenerCallbackId;
+	NSString *_rfidFreqHoppingTableReceivedListenerCallbackId;
+	NSString *_rfidHoppingTableSettedListenerCallbackId;
+	NSString *_rfidTagMemoryWroteListenerCallbackId;
+	NSString *_rfidTagKilledListenerCallbackId;
+	NSString *_rfidTagLockedListenerCallbackId;
+	NSString *_rfidRssiReceivedListenerCallbackId;
+	NSString *_rfidAdcReceivedListenerCallbackId;
 }
 /*****************BARCODE*************************/
 - (void)barcodePowerOn:(CDVInvokedUrlCommand*)command;
@@ -105,6 +127,30 @@
 - (void)setRfidPcEpcStringWithRssiListener:(CDVInvokedUrlCommand*)command;
 - (void)setRfidEpcStringWithRssiListener:(CDVInvokedUrlCommand*)command;
 - (void)setRfidPluggedListener:(CDVInvokedUrlCommand*)command;
+- (void)notifyRegionTo:(CDVInvokedUrlCommand*)command;
+- (void)setRegionAndNotifyTo:(CDVInvokedUrlCommand*)command;
+- (void)notifyReaderInfoTo:(CDVInvokedUrlCommand*)command;
+- (void)notifySelectParamTo:(CDVInvokedUrlCommand*)command;
+- (void)setSelectParamAndNotifyTo:(CDVInvokedUrlCommand*)command;
+- (void)notifyQueryParamTo:(CDVInvokedUrlCommand*)command;
+- (void)setQueryParamAndNotifyTo:(CDVInvokedUrlCommand*)command;
+- (void)notifyChannelTo:(CDVInvokedUrlCommand*)command;
+- (void)setChannelAndNotifyTo:(CDVInvokedUrlCommand*)command;
+- (void)notifyFhLbtParamTo:(CDVInvokedUrlCommand*)command;
+- (void)setFhLbtAndNotifyTo:(CDVInvokedUrlCommand*)command;
+- (void)notifyOuptPowerLevelTo:(CDVInvokedUrlCommand*)command;
+- (void)setOutputPowerLevelAndNotifyTo:(CDVInvokedUrlCommand*)command;
+- (void)setRFCwAndNotifyTo:(CDVInvokedUrlCommand*)command;
+- (void)readTagMemoryNotifyTo:(CDVInvokedUrlCommand*)command;
+- (void)notifyFreqHoppingTableTo:(CDVInvokedUrlCommand*)command;
+- (void)setFreqHoppingTableAndNotifyTo:(CDVInvokedUrlCommand*)command;
+- (void)writeTagMemoryAndNotifyTo:(CDVInvokedUrlCommand*)command;
+- (void)killTagAndNotifyTo:(CDVInvokedUrlCommand*)command;
+- (void)lockTagAndNotifyTo:(CDVInvokedUrlCommand*)command;
+- (void)notifyRssiTo:(CDVInvokedUrlCommand*)command;
+- (void)notifyAdcTo:(CDVInvokedUrlCommand*)command;
+- (void)setAnticollisionMode:(CDVInvokedUrlCommand*)command;
+- (void)setAnticollisionModeAndOptions:(CDVInvokedUrlCommand*)command;
 @end
 
 @implementation AsReader
@@ -601,7 +647,732 @@
 }
 
 
-/********** PRIVATE ************/
+- (void)notifyRegionTo:(CDVInvokedUrlCommand*)command{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	_rfidRegionListenerCallbackId = command.callbackId;
+	[self getRegion];
+}
+
+- (void)setRegionAndNotifyTo:(CDVInvokedUrlCommand*)command{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	_rfidRegionSettedListenerCallbackId = command.callbackId;
+	uint8_t region;
+	
+	if(command.arguments.count >=1){
+		region = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:0]]intValue];
+		if(![self setRegion:region]){
+			CDVPluginResult* pluginResult = nil;
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to set region"];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+		}
+	}else{
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"region parameter is required."];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
+	
+}
+
+- (void)notifyReaderInfoTo:(CDVInvokedUrlCommand*)command{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	_rfidReaderInfoListenerCallbackId = command.callbackId;
+	uint8_t infoType;
+	
+	if(command.arguments.count >=1){
+		infoType = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:0]]intValue];
+		if(![self getReaderInfo:infoType]){
+			CDVPluginResult* pluginResult = nil;
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to get reader info"];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+		}
+	}else{
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"infoType parameter is required."];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
+}
+
+- (void)notifySelectParamTo:(CDVInvokedUrlCommand*)command
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	_rfidSelectParamReceivedListenerCallbackId = command.callbackId;
+	
+	if(![self getSelectParam]){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to get select params"];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
+}
+
+
+- (void)setSelectParamAndNotifyTo:(CDVInvokedUrlCommand*)command
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	_rfidSelectParamSettedListenerCallbackId = command.callbackId;
+	
+	uint8_t _target; 
+	uint8_t _action;
+	uint8_t _memoryBank;
+	uint32_t _pointer;
+	uint8_t _length;
+	uint8_t _truncate;
+	NSData *_mask;
+	
+	if(command.arguments.count >=7){
+		@try {
+			_target = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:0]]intValue];
+			_action = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:1]]intValue];
+			_memoryBank = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:2]]intValue];
+			_pointer = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:3]]intValue];
+			_length = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:4]]intValue];
+			_truncate = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:5]]intValue];
+		
+			_mask = (NSData *)[[command arguments] objectAtIndex:6];
+			
+			if(![self setSelectParam:_target action:_action memoryBank:_memoryBank pointer:_pointer length:_length truncate:_truncate mask:_mask]){
+				CDVPluginResult* pluginResult = nil;
+				pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to set select param"];
+				[pluginResult setKeepCallbackAsBool:YES];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+			}
+			
+		}
+		@catch (NSException * e) {
+			NSLog(@"Exception: %@", e);
+			CDVPluginResult* pluginResult = nil;
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:e.reason];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+		}
+		@finally {
+		}
+		
+		
+		
+	}else{
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"parameter is not sufficient "];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
+	
+}
+
+
+- (void)notifyQueryParamTo:(CDVInvokedUrlCommand*)command
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	_rfidQueryParamReceivedListenerCallbackId = command.callbackId;
+	
+	if(![self getQueryParam]){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to get query params"];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
+}
+
+- (void)setQueryParamAndNotifyTo:(CDVInvokedUrlCommand*)command
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	_rfidQueryParamSettedListenerCallbackId = command.callbackId;
+	
+	uint8_t _dr;
+	uint8_t _m;
+	uint8_t _trext;
+	uint8_t _sel;
+	uint8_t _session;
+	uint8_t _target;
+	uint8_t _q;
+	
+	if(command.arguments.count >=7){
+		@try {
+			_dr = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:0]]intValue];
+			_m = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:1]]intValue];
+			_trext = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:2]]intValue];
+			_sel = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:3]]intValue];
+			_session = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:4]]intValue];
+			_target = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:5]]intValue];
+			_q = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:6]]intValue];
+			
+			if(![self setQueryParam:_dr m:_m trext:_trext sel:_sel session:_session target:_target q:_q]){
+				CDVPluginResult* pluginResult = nil;
+				pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to set query param"];
+				[pluginResult setKeepCallbackAsBool:YES];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+			}
+			
+		}
+		@catch (NSException * e) {
+			NSLog(@"Exception: %@", e);
+			CDVPluginResult* pluginResult = nil;
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:e.reason];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+		}
+		@finally {
+		}
+		
+		
+		
+	}else{
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"parameter is not sufficient "];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
+}
+
+
+- (void)notifyChannelTo:(CDVInvokedUrlCommand*)command{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	_rfidChannelReceivedListenerCallbackId = command.callbackId;
+	
+	if(![self getChannel]){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to get channel"];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
+}
+
+- (void)setChannelAndNotifyTo:(CDVInvokedUrlCommand*)command
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	_rfidChannelSettedListenerCallbackId = command.callbackId;
+	
+	uint8_t _channel;
+	uint8_t _offset;
+	
+	if(command.arguments.count >=2){
+		@try {
+			_channel = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:0]]intValue];
+			_offset = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:1]]intValue];
+			
+			if(![self setChannel:_channel channelOffset:_offset]){
+				CDVPluginResult* pluginResult = nil;
+				pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to set channel"];
+				[pluginResult setKeepCallbackAsBool:YES];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+			}
+			
+		}
+		@catch (NSException * e) {
+			NSLog(@"Exception: %@", e);
+			CDVPluginResult* pluginResult = nil;
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:e.reason];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+		}
+		@finally {
+		}
+		
+		
+	}else{
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"parameter is not sufficient "];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
+}
+- (void)notifyFhLbtParamTo:(CDVInvokedUrlCommand*)command
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	_rfidFhLbtParamListenerCallbackId = command.callbackId;
+	
+	if(![self getFhLbtParam]){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to get channel"];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
+}
+
+
+- (void)setFhLbtAndNotifyTo:(CDVInvokedUrlCommand*)command
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	_rfidFhLbtSettedListenerCallbackId = command.callbackId;
+	
+	uint16_t _readTime;
+	uint16_t _idleTime;
+	uint16_t _carrierSenseTime;
+	uint16_t _rfLevel;
+	uint8_t _frequencyHopping;
+	uint8_t _listenBeforeTalk;
+	uint8_t _continuousWave;
+		
+	
+	if(command.arguments.count >=7){
+		@try {
+			_readTime = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:0]]intValue];
+			_idleTime = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:1]]intValue];
+			_carrierSenseTime = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:2]]intValue];
+			_rfLevel = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:3]]intValue];
+			_frequencyHopping = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:4]]intValue];
+			_listenBeforeTalk = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:5]]intValue];
+			_continuousWave = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:6]]intValue];
+			
+			if(![self setFhLbtParam:_readTime idleTime:_idleTime carrierSenseTime:_carrierSenseTime rfLevel:_rfLevel frequencyHopping:_frequencyHopping listenBeforeTalk:_listenBeforeTalk continuousWave:_continuousWave]){
+				CDVPluginResult* pluginResult = nil;
+				pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to set fhlbt param"];
+				[pluginResult setKeepCallbackAsBool:YES];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+			}
+			
+		}
+		@catch (NSException * e) {
+			NSLog(@"Exception: %@", e);
+			CDVPluginResult* pluginResult = nil;
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:e.reason];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+		}
+		@finally {
+		}
+		
+		
+	}else{
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"parameter is not sufficient "];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
+}
+
+
+- (void)notifyOuptPowerLevelTo:(CDVInvokedUrlCommand*)command
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	_rfidOutputPowerLevelListenerCallbackId = command.callbackId;
+	
+	if(![self getOutputPowerLevel]){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to get output power level"];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
+}
+
+- (void)setOutputPowerLevelAndNotifyTo:(CDVInvokedUrlCommand*)command
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	_rfidOutputPowerLevelSettedListenerCallbackId = command.callbackId;
+	
+	uint16_t _power;
+	
+	if(command.arguments.count >=1){
+		@try {
+			_power = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:0]]intValue];
+			
+			if(![self setOutputPowerLevel:_power]){
+				CDVPluginResult* pluginResult = nil;
+				pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to set output power level"];
+				[pluginResult setKeepCallbackAsBool:YES];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+			}
+			
+		}
+		@catch (NSException * e) {
+			NSLog(@"Exception: %@", e);
+			CDVPluginResult* pluginResult = nil;
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:e.reason];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+		}
+		@finally {
+		}
+		
+		
+	}else{
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"parameter is not sufficient "];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
+}
+
+- (void)setRFCwAndNotifyTo:(CDVInvokedUrlCommand*)command
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	_rfidRFCwSettedListenerCallbackId = command.callbackId;
+	
+	uint8_t _on;
+	
+	if(command.arguments.count >=1){
+		@try {
+			_on = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:0]]intValue];
+			
+			if(![self setOutputPowerLevel:_on]){
+				CDVPluginResult* pluginResult = nil;
+				pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to set RFCw"];
+				[pluginResult setKeepCallbackAsBool:YES];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+			}
+			
+		}
+		@catch (NSException * e) {
+			NSLog(@"Exception: %@", e);
+			CDVPluginResult* pluginResult = nil;
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:e.reason];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+		}
+		@finally {
+		}
+		
+		
+	}else{
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"parameter is not sufficient "];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
+}
+
+- (void)readTagMemoryNotifyTo:(CDVInvokedUrlCommand*)command
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	_rfidTagMemoryReceivedListenerCallbackId = command.callbackId;
+	
+	uint32_t _accessPassword;
+	NSData *_epc;
+	uint8_t _memoryBank;
+	uint16_t _startAddress;
+	uint16_t _dataLength;
+	
+	if(command.arguments.count >=5){
+		@try {
+			_accessPassword = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:0]]intValue];
+			_epc = (NSData *)[[command arguments] objectAtIndex:1];
+			_memoryBank = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:2]]intValue];
+			_startAddress = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:3]]intValue];
+			_dataLength = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:4]]intValue];
+			
+			if(![self readFromTagMemory:_accessPassword epc:_epc memoryBank:_memoryBank startAddress:_startAddress dataLength:_dataLength]){
+				CDVPluginResult* pluginResult = nil;
+				pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to read tag memory"];
+				[pluginResult setKeepCallbackAsBool:YES];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+			}
+			
+		}
+		@catch (NSException * e) {
+			NSLog(@"Exception: %@", e);
+			CDVPluginResult* pluginResult = nil;
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:e.reason];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+		}
+		@finally {
+		}
+		
+		
+	}else{
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"parameter is not sufficient "];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
+}
+
+
+- (void)notifyFreqHoppingTableTo:(CDVInvokedUrlCommand*)command
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	_rfidFreqHoppingTableReceivedListenerCallbackId = command.callbackId;
+	
+	if(![self getFreqHoppingTable]){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to get output power level"];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
+}
+
+- (void)setFreqHoppingTableAndNotifyTo:(CDVInvokedUrlCommand*)command
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	_rfidHoppingTableSettedListenerCallbackId = command.callbackId;
+	
+	uint8_t _tableSize;
+	NSData *_channels;
+	
+	if(command.arguments.count >=5){
+		@try {
+			_tableSize = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:0]]intValue];
+			_channels = (NSData *)[[command arguments] objectAtIndex:1];
+			
+			if(![self setFreqHoppingTable:_tableSize channels:_channels]){
+				CDVPluginResult* pluginResult = nil;
+				pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to set freq hopping table"];
+				[pluginResult setKeepCallbackAsBool:YES];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+			}
+			
+		}
+		@catch (NSException * e) {
+			NSLog(@"Exception: %@", e);
+			CDVPluginResult* pluginResult = nil;
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:e.reason];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+		}
+		@finally {
+		}
+		
+		
+	}else{
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"parameter is not sufficient "];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
+}
+
+- (void)writeTagMemoryAndNotifyTo:(CDVInvokedUrlCommand*)command
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	_rfidTagMemoryWroteListenerCallbackId = command.callbackId;
+	
+	uint32_t _accessPassword;
+	NSData *_epc;
+	uint8_t _memoryBank;
+	uint16_t _startAddress;
+	NSData *_dataToWrite;
+	
+	if(command.arguments.count >=5){
+		@try {
+			_accessPassword = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:0]]intValue];
+			_epc = (NSData *)[[command arguments] objectAtIndex:1];
+			_memoryBank = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:2]]intValue];
+			_startAddress = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:3]]intValue];
+			_dataToWrite = (NSData *)[[command arguments] objectAtIndex:4];
+			
+			if(![self writeToTagMemory:_accessPassword epc:_epc memoryBank:_memoryBank startAddress:_startAddress dataToWrite:_dataToWrite]){
+				CDVPluginResult* pluginResult = nil;
+				pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to write tag memory"];
+				[pluginResult setKeepCallbackAsBool:YES];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+			}
+			
+		}
+		@catch (NSException * e) {
+			NSLog(@"Exception: %@", e);
+			CDVPluginResult* pluginResult = nil;
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:e.reason];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+		}
+		@finally {
+		}
+		
+		
+	}else{
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"parameter is not sufficient "];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
+}
+
+
+- (void)killTagAndNotifyTo:(CDVInvokedUrlCommand*)command
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	_rfidTagKilledListenerCallbackId = command.callbackId;
+	
+	uint32_t _accessPassword;
+	NSData *_epc;
+	
+	if(command.arguments.count >=2){
+		@try {
+			_accessPassword = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:0]]intValue];
+			_epc = (NSData *)[[command arguments] objectAtIndex:1];
+			
+			if(![self killTag:_accessPassword epc:_epc]){
+				CDVPluginResult* pluginResult = nil;
+				pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to kill tag"];
+				[pluginResult setKeepCallbackAsBool:YES];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+			}
+			
+		}
+		@catch (NSException * e) {
+			NSLog(@"Exception: %@", e);
+			CDVPluginResult* pluginResult = nil;
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:e.reason];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+		}
+		@finally {
+		}
+		
+		
+	}else{
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"parameter is not sufficient "];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
+}
+
+- (void)lockTagAndNotifyTo:(CDVInvokedUrlCommand*)command
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	_rfidTagLockedListenerCallbackId = command.callbackId;
+	
+	uint32_t _accessPassword;
+	NSData *_epc;
+	uint32_t _lockData;
+	
+	if(command.arguments.count >=3){
+		@try {
+			_accessPassword = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:0]]intValue];
+			_epc = (NSData *)[[command arguments] objectAtIndex:1];
+			_lockData = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:2]]intValue];
+			
+			if(![self lockTagMemory:_accessPassword epc:_epc lockData:_lockData]){
+				CDVPluginResult* pluginResult = nil;
+				pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to lock tag"];
+				[pluginResult setKeepCallbackAsBool:YES];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+			}
+			
+		}
+		@catch (NSException * e) {
+			NSLog(@"Exception: %@", e);
+			CDVPluginResult* pluginResult = nil;
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:e.reason];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+		}
+		@finally {
+		}
+		
+		
+	}else{
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"parameter is not sufficient "];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
+}
+
+- (void)notifyRssiTo:(CDVInvokedUrlCommand*)command
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	_rfidRssiReceivedListenerCallbackId = command.callbackId;
+	
+	if(![self getRssi]){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to get rssi"];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
+}
+
+- (void)notifyAdcTo:(CDVInvokedUrlCommand*)command
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	_rfidAdcReceivedListenerCallbackId = command.callbackId;
+	
+}
+
+- (void)setAnticollisionMode:(CDVInvokedUrlCommand*)command
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	uint8_t _mode;
+	
+	if(command.arguments.count >=1){
+		@try {
+			_mode = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:0]]intValue];
+			
+			if([self setAnticollision:_mode]){
+				CDVPluginResult* pluginResult = nil;
+				pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"anti-collision mode set successfully"];
+				[pluginResult setKeepCallbackAsBool:YES];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+			}else{
+				CDVPluginResult* pluginResult = nil;
+				pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to set anti-collision mode"];
+				[pluginResult setKeepCallbackAsBool:YES];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+			}
+			
+		}
+		@catch (NSException * e) {
+			NSLog(@"Exception: %@", e);
+			CDVPluginResult* pluginResult = nil;
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:e.reason];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+		}
+		@finally {
+		}
+		
+		
+	}else{
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"parameter is not sufficient "];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
+}
+- (void)setAnticollisionModeAndOptions:(CDVInvokedUrlCommand*)command
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	uint8_t _mode;
+	uint8_t _qStart;
+	uint8_t _qMax;
+	uint8_t _qMin;
+	
+	if(command.arguments.count >=4){
+		@try {
+			_mode = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:0]]intValue];
+			_qStart = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:1]]intValue];
+			_qMax = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:2]]intValue];
+			_qMin = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:3]]intValue];
+			
+			if([self setAnticollision:_mode qStart:_qStart qMax:_qMax qMin:_qMin]){
+				CDVPluginResult* pluginResult = nil;
+				pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"anti-collision mode and options set successfully"];
+				[pluginResult setKeepCallbackAsBool:YES];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+			}else{
+				CDVPluginResult* pluginResult = nil;
+				pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to set anti-collision mode and options"];
+				[pluginResult setKeepCallbackAsBool:YES];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+			}
+			
+		}
+		@catch (NSException * e) {
+			NSLog(@"Exception: %@", e);
+			CDVPluginResult* pluginResult = nil;
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:e.reason];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+		}
+		@finally {
+		}
+		
+		
+	}else{
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"parameter is not sufficient "];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
+}
+/********************************************************************* PRIVATE ***********************************************/
 
 - (RcpRfidApi *)rfidRcp{
 	NSLog(@"%s,called",__PRETTY_FUNCTION__);
@@ -626,7 +1397,7 @@
 	}else{
 		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"NO"];
 	}
-	NSLog(@"_rfidPluggedListenerCallbackId:%s",_rfidPluggedListenerCallbackId);
+	NSLog(@"_rfidPluggedListenerCallbackId:%@",_rfidPluggedListenerCallbackId);
 	if(_rfidPluggedListenerCallbackId){
 		[pluginResult setKeepCallbackAsBool:YES];
 		[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidPluggedListenerCallbackId];
@@ -738,10 +1509,18 @@
 			[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidEpcDataListenerCallbackId];
 		}
 		
-		NSString *value = [[NSString alloc]initWithData:epc encoding:_encoding];
+		//NSString *value = [[NSString alloc]initWithData:epc encoding:_encoding];
+		
+		NSString *hexStr = nil;
+		NSMutableString* tmp = [[NSMutableString alloc] init];
+		unsigned char* ptr= (unsigned char*) [epc bytes];
+		for(int i = 0; i < epc.length; i++) {
+			[tmp appendFormat:@"%02X", *ptr++ & 0xFF ];
+		}
+		hexStr = tmp;
 		
 		if(_rfidEpcStringListenerCallbackId){
-			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:value];
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:hexStr];
 			[pluginResult setKeepCallbackAsBool:YES];
 			[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidEpcStringListenerCallbackId];
 		}
@@ -763,10 +1542,18 @@
 			[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidPcEpcDataWithRssiListenerCallbackId];
 		}
 		
-		NSString *value = [[NSString alloc]initWithData:pcEpc encoding:_encoding];
+		//NSString *value = [[NSString alloc]initWithData:pcEpc encoding:_encoding];
+		
+		NSString *hexStr = nil;
+		NSMutableString* tmp = [[NSMutableString alloc] init];
+		unsigned char* ptr= (unsigned char*) [pcEpc bytes];
+		for(int i = 0; i < pcEpc.length; i++) {
+			[tmp appendFormat:@"%02X", *ptr++ & 0xFF ];
+		}
+		hexStr = tmp;
 		
 		if(_rfidPcEpcStringWithRssiListenerCallbackId){
-			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:[[NSDictionary alloc] initWithObjectsAndKeys:value,@"PcEpc",[NSString stringWithFormat:@"%d",rssi],@"Rssi",nil]];
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:[[NSDictionary alloc] initWithObjectsAndKeys:hexStr,@"PcEpc",[NSString stringWithFormat:@"%d",rssi],@"Rssi",nil]];
 			[pluginResult setKeepCallbackAsBool:YES];
 			[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidPcEpcStringWithRssiListenerCallbackId];
 		}
@@ -788,15 +1575,388 @@
 			[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidEpcDataWithRssiListenerCallbackId];
 		}
 		
-		NSString *value = [[NSString alloc]initWithData:epc encoding:_encoding];
+		//NSString *value = [[NSString alloc]initWithData:epc encoding:_encoding];
+		
+		NSString *hexStr = nil;
+		NSMutableString* tmp = [[NSMutableString alloc] init];
+		unsigned char* ptr= (unsigned char*) [epc bytes];
+		for(int i = 0; i < epc.length; i++) {
+			[tmp appendFormat:@"%02X", *ptr++ & 0xFF ];
+		}
+		hexStr = tmp;
 		
 		if(_rfidEpcStringWithRssiListenerCallbackId){
-			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:[[NSDictionary alloc] initWithObjectsAndKeys:value,@"Epc",[NSString stringWithFormat:@"%d",rssi],@"Rssi",nil]];
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:[[NSDictionary alloc] initWithObjectsAndKeys:hexStr,@"Epc",[NSString stringWithFormat:@"%d",rssi],@"Rssi",nil]];
 			[pluginResult setKeepCallbackAsBool:YES];
 			[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidEpcStringWithRssiListenerCallbackId];
 		}
 		
 		
 	});
+}
+- (BOOL)getRegion{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	return [self.rfidRcp getRegion];
+}
+- (void)regionReceived:(uint8_t)region
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	if(_rfidRegionListenerCallbackId){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:region];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidRegionListenerCallbackId];
+	}
+}
+- (BOOL)setRegion:(uint8_t)region
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	return [self.rfidRcp setRegion:region];
+}
+- (void)setedRegionReceived:(uint8_t)statusCode
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	if(_rfidRegionSettedListenerCallbackId){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:statusCode];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidRegionSettedListenerCallbackId];
+	}
+}
+- (BOOL)getReaderInfo:(uint8_t)infoType
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	return [self.rfidRcp getReaderInfo:infoType];
+}
+- (void)readerInfoReceived:(NSData *)data
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	if(_rfidReaderInfoListenerCallbackId){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArrayBuffer:data];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidReaderInfoListenerCallbackId];
+	}
+}
+- (BOOL)getSelectParam
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	return [self.rfidRcp getSelectParam];
+}
+- (void)selectParamReceived:(NSData *)selParam
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	if(_rfidSelectParamReceivedListenerCallbackId){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArrayBuffer:selParam];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidSelectParamReceivedListenerCallbackId];
+	}
+}
+
+- (BOOL)setSelectParam:(uint8_t)target action:(uint8_t)action memoryBank:(uint8_t)memoryBank pointer:(uint32_t)pointer length:(uint8_t)length truncate:(uint8_t)truncate mask:(NSData *)mask
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	return [self.rfidRcp setSelectParam:target action:action memoryBank:memoryBank pointer:pointer length:length truncate:truncate mask:mask];
+	
+}
+- (void)setedSelParamReceived:(uint8_t)statusCode
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	if(_rfidSelectParamSettedListenerCallbackId){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:statusCode];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidSelectParamSettedListenerCallbackId];
+	}
+}
+- (BOOL)getQueryParam
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	return [self.rfidRcp getSelectParam];
+}
+- (void)queryParamReceived:(NSData *)qryParam
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	if(_rfidQueryParamReceivedListenerCallbackId){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArrayBuffer:qryParam];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidQueryParamReceivedListenerCallbackId];
+	}
+}
+
+- (BOOL)setQueryParam:(uint8_t)dr
+ m:(uint8_t)m
+ trext:(uint8_t)trext
+ sel:(uint8_t)sel
+ session:(uint8_t)session
+ target:(uint8_t)target
+ q:(uint8_t)q
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	return [self.rfidRcp setQueryParam:dr m:m trext:trext sel:sel session:session target:target q:q];
+	
+}
+- (void)setedQueryParamReceived:(uint8_t)statusCode
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	if(_rfidQueryParamSettedListenerCallbackId){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:statusCode];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidQueryParamSettedListenerCallbackId];
+	}
+}
+
+- (BOOL)getChannel
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	return [self.rfidRcp getChannel];
+}
+- (void)channelReceived:(uint8_t)channel channelOffset:(uint8_t)channelOffset
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	if(_rfidChannelReceivedListenerCallbackId){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:[[NSDictionary alloc] initWithObjectsAndKeys:[NSString stringWithFormat:@"%d",channel],@"channel",[NSString stringWithFormat:@"%d",channelOffset],@"offset",nil]];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidChannelReceivedListenerCallbackId];
+	}
+}
+- (BOOL)setChannel:(uint8_t)channel channelOffset:(uint8_t)channelOffset
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	return [self.rfidRcp setChannel:channel channelOffset:channelOffset];
+}
+- (void)setedChParamReceived:(uint8_t)statusCode
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	if(_rfidChannelSettedListenerCallbackId){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:statusCode];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidChannelSettedListenerCallbackId];
+	}
+}
+
+- (BOOL)getFhLbtParam
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	return [self.rfidRcp getFhLbtParam];
+}
+- (void)fhLbtReceived:(NSData *)fhLb
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	if(_rfidFhLbtParamListenerCallbackId){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArrayBuffer:fhLb];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidFhLbtParamListenerCallbackId];
+	}
+}
+
+- (BOOL)setFhLbtParam:(uint16_t)readTime
+idleTime:(uint16_t)idleTime
+carrierSenseTime:(uint16_t) carrierSenseTime
+rfLevel:(uint16_t)rfLevel
+frequencyHopping:(uint8_t)frequencyHopping
+listenBeforeTalk:(uint8_t)listenBeforeTalk
+continuousWave:(uint8_t)continuousWave
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	return [self.rfidRcp setFhLbtParam:readTime idleTime:idleTime carrierSenseTime:carrierSenseTime rfLevel:rfLevel frequencyHopping:frequencyHopping listenBeforeTalk:listenBeforeTalk continuousWave:continuousWave];
+	
+}
+
+- (void)setedFhLbtReceived:(uint8_t)statusCode
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	if(_rfidFhLbtSettedListenerCallbackId){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:statusCode];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidFhLbtSettedListenerCallbackId];
+	}
+}
+- (BOOL)getOutputPowerLevel
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	return [self.rfidRcp getOutputPowerLevel];
+}
+- (void)txPowerLevelReceived:(uint8_t)power
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	if(_rfidOutputPowerLevelListenerCallbackId){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:power];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidOutputPowerLevelListenerCallbackId];
+	}
+}
+- (BOOL)setOutputPowerLevel:(uint16_t)power
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	return [self.rfidRcp setOutputPowerLevel:power];
+}
+- (void)setedTxPwrReceived:(uint8_t)statusCode
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	if(_rfidOutputPowerLevelSettedListenerCallbackId){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:statusCode];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidOutputPowerLevelSettedListenerCallbackId];
+	}
+}
+- (BOOL)setRfCw:(uint8_t)on
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	return [self.rfidRcp setRfCw:on];
+}
+- (void)setedCwReceived:(uint8_t)statusCode
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	if(_rfidRFCwSettedListenerCallbackId){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:statusCode];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidRFCwSettedListenerCallbackId];
+	}
+}
+- (BOOL)readFromTagMemory:(uint32_t)accessPassword
+epc:(NSData*)epc
+memoryBank:(uint8_t)memoryBank
+startAddress:(uint16_t)startAddress
+dataLength:(uint16_t)dataLength
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	return [self.rfidRcp readFromTagMemory:accessPassword epc:epc memoryBank:memoryBank startAddress:startAddress dataLength:dataLength];
+}
+- (void)tagMemoryReceived:(NSData *)data
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	if(_rfidTagMemoryReceivedListenerCallbackId){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArrayBuffer:data];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidTagMemoryReceivedListenerCallbackId];
+	}
+}
+- (BOOL)getFreqHoppingTable
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	return [self.rfidRcp getFreqHoppingTable];
+}
+- (void)hoppingTableReceived:(NSData *)table
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	if(_rfidFreqHoppingTableReceivedListenerCallbackId){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArrayBuffer:table];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidFreqHoppingTableReceivedListenerCallbackId];
+	}
+}
+- (BOOL)setFreqHoppingTable:(uint8_t)tableSize channels:(NSData*)channels
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	return [self.rfidRcp setFreqHoppingTable:tableSize channels:channels];
+}
+- (void)setedHoppintTbleReceived:(uint8_t)statusCode
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	if(_rfidHoppingTableSettedListenerCallbackId){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:statusCode];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidHoppingTableSettedListenerCallbackId];
+	}
+}
+
+- (BOOL)writeToTagMemory:(uint32_t)accessPassword
+epc:(NSData*)epc
+memoryBank:(uint8_t)memoryBank
+startAddress:(uint16_t)startAddress
+dataToWrite:(NSData*)dataToWrite
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	return [self.rfidRcp writeToTagMemory:accessPassword epc:epc memoryBank:memoryBank startAddress:startAddress dataToWrite:dataToWrite];
+}
+- (void)writedReceived:(uint8_t)statusCode
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	if(_rfidTagMemoryWroteListenerCallbackId){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:statusCode];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidTagMemoryWroteListenerCallbackId];
+	}
+}
+- (BOOL)killTag:(uint32_t)killPassword epc:(NSData*)epc
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	return [self.rfidRcp killTag:killPassword epc:epc];
+}
+- (void)killedReceived:(uint8_t)statusCode
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	if(_rfidTagKilledListenerCallbackId){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:statusCode];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidTagKilledListenerCallbackId];
+	}
+}
+- (BOOL)lockTagMemory:(uint32_t)accessPassword epc:(NSData*)epc lockData:(uint32_t)lockData
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	return [self.rfidRcp lockTagMemory:accessPassword epc:epc lockData:lockData];
+}
+- (void)lockedReceived:(uint8_t)statusCode
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	if(_rfidTagLockedListenerCallbackId){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:statusCode];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidTagLockedListenerCallbackId];
+	}
+}
+
+- (BOOL)getRssi
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	return [self.rfidRcp getRssi];
+}
+- (void)rssiReceived:(uint16_t)rssi
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	if(_rfidRssiReceivedListenerCallbackId){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsInt:rssi];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidRssiReceivedListenerCallbackId];
+	}
+}
+- (void)adcReceived:(NSData*)data
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	if(_rfidAdcReceivedListenerCallbackId){
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArrayBuffer:data];
+		[pluginResult setKeepCallbackAsBool:YES];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidAdcReceivedListenerCallbackId];
+	}
+}
+- (BOOL)setAnticollision:(uint8_t)mode
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	return [self.rfidRcp setAnticollision:mode];
+}
+- (BOOL)setAnticollision:(uint8_t)mode qStart:(uint8_t)qStart qMax:(uint8_t)qMax qMin:(uint8_t)qMin
+{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	return [self.rfidRcp setAnticollision:mode qStart:qStart qMax:qMax qMin:qMin];
 }
 @end

@@ -135,6 +135,75 @@ module.exports = {
 	},
 	setRfidPluggedListener: function(listener){
 		exec(listener, null, "AsReader", "setRfidPluggedListener", []);
+	},
+	notifyRegionTo: function(listener){
+		exec(listener, null, "AsReader", "sendRegionTo", []);
+	},
+	setRegionAndNotifyTo: function(region,listener,error){
+		exec(listener, error, "AsReader", "setRegionAndNotifyTo", [region]);
+	},
+	notifyReaderInfoTo: function(infoType,listener,error){
+		exec(listener, error, "AsReader", "notifyReaderInfoTo", [infoType]);
+	},
+	notifySelectParamTo: function(listener,error){
+		exec(listener, error, "AsReader", "notifySelectParamTo", []);
+	},
+	setSelectParamAndNotifyTo: function(target,action,memoryBank,pointer,length,truncate,mask,listener,error){
+		exec(listener, error, "AsReader", "setSelectParamAndNotifyTo", [target,action,memoryBank,pointer,length,truncate,mask]);
+	},
+	notifyQueryParamTo: function(listener,error){
+		exec(listener, error, "AsReader", "notifyQueryParamTo", []);
+	},
+	setQueryParamAndNotifyTo: function(dr,m,trext,sel,session,target,q,listener,error){
+		exec(listener, error, "AsReader", "setQueryParamAndNotifyTo", [dr,m,trext,sel,session,target,q]);
+	},
+	notifyChannelTo: function(listener,error){
+		exec(listener, error, "AsReader", "notifyChannelTo", []);
+	},
+	setChannelAndNotifyTo: function(channel,offset,listener,error){
+		exec(listener, error, "AsReader", "setChannelAndNotifyTo", [channel,offset]);
+	},
+	notifyFhLbtParamTo: function(listener,error){
+		exec(listener, error, "AsReader", "notifyFhLbtParamTo", []);
+	},
+	setFhLbtAndNotifyTo: function(readTime,idleTime,carrierSenseTime,rfLevel,frequencyHopping,listenBeforeTalk,continuousWave,listener,error){
+		exec(listener, error, "AsReader", "setFhLbtAndNotifyTo", [readTime,idleTime,carrierSenseTime,rfLevel,frequencyHopping,listenBeforeTalk,continuousWave]);
+	},
+	notifyOuptPowerLevelTo: function(listener,error){
+		exec(listener, error, "AsReader", "notifyOuptPowerLevelTo", []);
+	},
+	setOutputPowerLevelAndNotifyTo: function(power,listener,error){
+		exec(listener, error, "AsReader", "setOutputPowerLevelAndNotifyTo", [power]);
+	},
+	setRFCwAndNotifyTo: function(on,listener,error){
+		exec(listener, error, "AsReader", "setRFCwAndNotifyTo", [on]);
+	},
+	readTagMemoryNotifyTo: function(accessPassword,epc,memoryBank,startAddress,dataLength,listener,error){
+		exec(listener, error, "AsReader", "readTagMemoryNotifyTo", [accessPassword,epc,memoryBank,startAddress,dataLength]);
+	},
+	notifyFreqHoppingTableTo: function(listener,error){
+		exec(listener, error, "AsReader", "notifyFreqHoppingTableTo", []);
+	},
+	setFreqHoppingTableAndNotifyTo: function(tableSize,channels,listener,error){
+		exec(listener, error, "AsReader", "setFreqHoppingTableAndNotifyTo", [tableSize,channels]);
+	},
+	writeTagMemoryAndNotifyTo: function(accessPassword,epc,memoryBank,startAddress,dataToWrite,listener,error){
+		exec(listener, error, "AsReader", "writeTagMemoryAndNotifyTo", [accessPassword,epc,memoryBank,startAddress,dataToWrite]);
+	},
+	killTagAndNotifyTo: function(accessPassword,epc,listener,error){
+		exec(listener, error, "AsReader", "killTagAndNotifyTo", [accessPassword,epc]);
+	},
+	lockTagAndNotifyTo: function(accessPassword,epc,lockData,listener,error){
+		exec(listener, error, "AsReader", "lockTagAndNotifyTo", [accessPassword,epc,lockData]);
+	},
+	notifyRssiTo: function(listener,error){
+		exec(listener, error, "AsReader", "notifyRssiTo", []);
+	},
+	setAnticollisionMode: function(mode,listener,error){
+		exec(listener, error, "AsReader", "setAnticollisionMode", [mode]);
+	},
+	setAnticollisionModeAndOptions: function(mode,qStart,qMax,qMin,listener,error){
+		exec(listener, error, "AsReader", "setAnticollisionModeAndOptions", [mode,qStart,qMax,qMin]);
 	}
 	
 };
