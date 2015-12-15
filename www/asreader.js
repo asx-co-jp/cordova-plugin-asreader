@@ -103,6 +103,15 @@ module.exports = {
 	startReadTags: function(success, error) {
 		exec(success, error, "AsReader", "startReadTags", []);
 	},
+	startReadTagsWithParams: function(success, error, mtnu, mtime, repeatCycle) {
+		exec(success, error, "AsReader", "startReadTagsWithParams", [mtnu, mtime, repeatCycle]);
+	},
+	startReadTagsAndRssi: function(success, error) {
+		exec(success, error, "AsReader", "startReadTagsAndRssi", []);
+	},
+	startReadTagsAndRssiWithParams: function(success, error, mtnu, mtime, repeatCycle) {
+		exec(success, error, "AsReader", "startReadTagsAndRssiWithParams", [mtnu, mtime, repeatCycle]);
+	},
 	stopReadTags: function(success, error) {
 		exec(success, error, "AsReader", "stopReadTags", []);
 	},

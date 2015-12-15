@@ -531,6 +531,114 @@
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+- (void)startReadTagsWithParams:(CDVInvokedUrlCommand*)command{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	uint8_t _mtnu;
+	uint8_t _mtime;
+	uint16_t _repeatCycle;
+		
+	if(command.arguments.count >=3){
+		@try {
+			_mtnu = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:0]]intValue];
+			_mtime = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:1]]intValue];
+			_repeatCycle = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:2]]intValue];
+			
+			if([self startReadTags:_mtnu mtime:_mtime repeatCycle:_repeatCycle]){
+				NSLog(@"startReadTags return yes");
+				CDVPluginResult* pluginResult = nil;
+				pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"YES"];
+				//[pluginResult setKeepCallbackAsBool:YES];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+			}else{
+				NSLog(@"startReadTags return no");
+				CDVPluginResult* pluginResult = nil;
+				pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"NO"];
+				//[pluginResult setKeepCallbackAsBool:YES];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+			}
+			
+		}
+		@catch (NSException * e) {
+			NSLog(@"Exception: %@", e);
+			CDVPluginResult* pluginResult = nil;
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:e.reason];
+			//[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+		}
+		@finally {
+		}
+		
+		
+	}else{
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"parameter is not sufficient "];
+		//[pluginResult setKeepCallbackAsBool:YES];
+		NSLog(@"parameter is not sufficient ");
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
+	
+}
+
+
+- (void)startReadTagsAndRssi:(CDVInvokedUrlCommand*)command{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	[self startReadTagsWithRssi:0 mtime:0 repeatCycle:0];
+	CDVPluginResult* pluginResult = nil;
+	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)startReadTagsAndRssiWithParams:(CDVInvokedUrlCommand*)command{
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	
+	uint8_t _mtnu;
+	uint8_t _mtime;
+	uint16_t _repeatCycle;
+		
+	if(command.arguments.count >=3){
+		@try {
+			_mtnu = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:0]]intValue];
+			_mtime = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:1]]intValue];
+			_repeatCycle = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:2]]intValue];
+			
+			if([self startReadTagsWithRssi:_mtnu mtime:_mtime repeatCycle:_repeatCycle]){
+				NSLog(@"startReadTagsWithRssi return yes");
+				CDVPluginResult* pluginResult = nil;
+				pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"YES"];
+				//[pluginResult setKeepCallbackAsBool:YES];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+			}else{
+				NSLog(@"startReadTagsWithRssi return no");
+				CDVPluginResult* pluginResult = nil;
+				pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"NO"];
+				//[pluginResult setKeepCallbackAsBool:YES];
+				[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+			}
+			
+		}
+		@catch (NSException * e) {
+			NSLog(@"Exception: %@", e);
+			CDVPluginResult* pluginResult = nil;
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:e.reason];
+			//[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+		}
+		@finally {
+		}
+		
+		
+	}else{
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"parameter is not sufficient "];
+		//[pluginResult setKeepCallbackAsBool:YES];
+		NSLog(@"parameter is not sufficient ");
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}
+	
+}
+
 - (void)stopReadTags:(CDVInvokedUrlCommand*)command{
 	NSLog(@"%s,called",__PRETTY_FUNCTION__);
 	
@@ -1544,15 +1652,15 @@
 		
 		//NSString *value = [[NSString alloc]initWithData:pcEpc encoding:_encoding];
 		
-		NSString *hexStr = nil;
-		NSMutableString* tmp = [[NSMutableString alloc] init];
-		unsigned char* ptr= (unsigned char*) [pcEpc bytes];
-		for(int i = 0; i < pcEpc.length; i++) {
-			[tmp appendFormat:@"%02X", *ptr++ & 0xFF ];
-		}
-		hexStr = tmp;
-		
 		if(_rfidPcEpcStringWithRssiListenerCallbackId){
+			NSString *hexStr = nil;
+			NSMutableString* tmp = [[NSMutableString alloc] init];
+			unsigned char* ptr= (unsigned char*) [pcEpc bytes];
+			for(int i = 0; i < pcEpc.length; i++) {
+				[tmp appendFormat:@"%02X", *ptr++ & 0xFF ];
+			}
+			hexStr = tmp;
+			
 			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:[[NSDictionary alloc] initWithObjectsAndKeys:hexStr,@"PcEpc",[NSString stringWithFormat:@"%d",rssi],@"Rssi",nil]];
 			[pluginResult setKeepCallbackAsBool:YES];
 			[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidPcEpcStringWithRssiListenerCallbackId];
