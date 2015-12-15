@@ -17,6 +17,9 @@ They turn your iOS device into a powerful enterprise level handheld terminal ver
 For more information about AsReader please refer to their official website.
 http://asreader.com
 
+# Known issue
+1.Use setRfidPcEpcDataWithRssiListener to set a listener  will result in  crash when receiving data because of Cordova issue
+2.Listener set bysetRfidEpcDataWithRssiListener and setRfidEpcDataWithRssiListenerwill never be called because of SDK issue
 
 Enjoy AsReader & Cordova!
 
