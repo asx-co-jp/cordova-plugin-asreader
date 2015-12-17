@@ -88,6 +88,9 @@ module.exports = {
 		 exec(success, error, "AsReader", "setEncoding", [encoding]);
 	},
 	/************** RFID *******************/
+	isRfidOpened: function(success, error) {
+		exec(success, error, "AsReader", "isRfidOpened", []);
+	},
 	rfidPowerOn: function(success, error) {
 		exec(success, error, "AsReader", "rfidPowerOn", []);
 	},
@@ -112,11 +115,20 @@ module.exports = {
 	startReadTagsAndRssiWithParams: function(success, error, mtnu, mtime, repeatCycle) {
 		exec(success, error, "AsReader", "startReadTagsAndRssiWithParams", [mtnu, mtime, repeatCycle]);
 	},
+	startReadTagsAndTid: function(success, error) {
+		exec(success, error, "AsReader", "startReadTagsAndTid", []);
+	},
+	startReadTagsAndTidWithParams: function(success, error, mtnu, mtime, repeatCycle) {
+		exec(success, error, "AsReader", "startReadTagsAndTidWithParams", [mtnu, mtime, repeatCycle]);
+	},
 	stopReadTags: function(success, error) {
 		exec(success, error, "AsReader", "stopReadTags", []);
 	},
 	setRfidPowerListener: function(listener){
 		exec(listener, null, "AsReader", "setRfidPowerListener", []);
+	},
+	setRfidStartedReadTagListener: function(listener){
+		exec(listener, null, "AsReader", "setRfidStartedReadTagListener", []);
 	},
 	setRfidPcEpcStringListener: function(listener){
 		exec(listener, null, "AsReader", "setRfidPcEpcStringListener", []);
@@ -141,6 +153,12 @@ module.exports = {
 	},
 	setRfidEpcStringWithRssiListener: function(listener){
 		exec(listener, null, "AsReader", "setRfidEpcStringWithRssiListener", []);
+	},
+	setRfidEpcDataWithTidListener: function(listener){
+		exec(listener, null, "AsReader", "setRfidEpcDataWithTidListener", []);
+	},
+	setRfidEpcStringWithTidListener: function(listener){
+		exec(listener, null, "AsReader", "setRfidEpcStringWithTidListener", []);
 	},
 	setRfidPluggedListener: function(listener){
 		exec(listener, null, "AsReader", "setRfidPluggedListener", []);

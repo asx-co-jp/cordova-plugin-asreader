@@ -66,7 +66,6 @@
 - (void)accessoryDidDisconnect:(NSNotification *)notification;
 - (void)accessoryDidConnect:(NSNotification *)notification;
 - (BOOL) isConnected;
-- (BOOL) getIsRFID;
 - (NSString *)getVersion;
 - (void) setCurrentBattery:(int)bat;
 - (int) getCurrentBattery;

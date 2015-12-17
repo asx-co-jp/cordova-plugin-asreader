@@ -19,15 +19,20 @@
 - (void)close;
 - (void)plugStatusChanged:(NSInteger)status;
 - (int)receive:(NSData*)data;
-
+- (BOOL)setReaderPower:(BOOL)on;
+- (void)setReaderPowerOnWithBeep:(uint8_t)beepOn
+                  setVibration:(uint8_t)vibrationOn
+               setIllumination:(uint8_t)illuminationOn;
+- (BOOL)setBeep:(uint8_t)beepOn
+   setVibration:(uint8_t)vibrationOn
+setIllumination:(uint8_t)illuminationOn;
 - (BOOL)startReadTags:(uint8_t)mtnu mtime:(uint8_t)mtime repeatCycle:(uint16_t)repeatCycle;
 - (BOOL)startReadTagsWithRssi:(uint8_t)mtnu mtime:(uint8_t)mtime repeatCycle:(uint16_t)repeatCycle;
+- (BOOL)startReadTagsWithTid:(uint8_t)mtnu mtime:(uint8_t)mtime repeatCycle:(uint16_t)repeatCycle;
 - (BOOL)stopReadTags;
-
-- (BOOL)setReaderPower:(BOOL)on;
-- (BOOL)setReaderProgMode:(uint8_t)mode;
-
+- (BOOL)getReaderInfo;
 - (BOOL)getReaderInfo:(uint8_t)infoType;
+- (BOOL)setReaderProgMode:(uint8_t)mode;
 - (BOOL)getRegion;
 - (BOOL)setRegion:(uint8_t)region;
 - (BOOL)getSelectParam;
@@ -70,6 +75,8 @@
 		channels:(NSData*)channels;
 - (BOOL)getModulation;
 - (BOOL)setModulation:(uint8_t)mode;
+- (BOOL)getSession;
+- (BOOL)setSession:(uint8_t)session;
 - (BOOL)getAnticollision;
 - (BOOL)setAnticollision:(uint8_t)mode;
 - (BOOL)setAnticollision:(uint8_t)mode qStart:(uint8_t)qStart qMax:(uint8_t)qMax qMin:(uint8_t)qMin;
@@ -85,9 +92,10 @@
 		lockData:(uint32_t)lockData;
 - (BOOL)getTemperature;
 - (BOOL)getRssi;
-- (BOOL)setBeep:(uint8_t)beepOn
-        setVibration:(uint8_t)vibrationOn
-        setIllumination:(uint8_t)illuminationOn;
+-(BOOL) setStopConditionMtnu:(uint8_t)mtnu
+                    setMtime:(uint8_t)mtime
+              setRepeatCycle:(uint16_t)repeatCycle;
+-(BOOL)getStopCondition;
 - (BOOL)genericTrasport:(uint8_t)TS
         ap:(uint32_t)accessPassword
         RM:(uint8_t)RM
@@ -98,6 +106,7 @@
 - (BOOL)getRssiOffset;
 - (BOOL)setRssiOffset;
 - (BOOL)setOptimumFrequencyHoppingTable;
+-(BOOL) GetFrequencyHoppingMode;
 - (BOOL)SetFrequencyHoppingMode:(uint8_t)mode;
 - (BOOL)updateRegistry:(uint8_t)update;
 @property (nonatomic, assign) BOOL isConnected;
@@ -110,29 +119,42 @@
 - (void)pcEpcReceived:(NSData *)pcEpc;
 - (void)epcReceived:(NSData *)epc;
 - (void)epcReceived:(NSData *)epc rssi:(int8_t)rssi;
+- (void)epcReceived:(NSData *)epc tid:(NSData*)tid;
 - (void)pcEpcRssiReceived:(NSData *)pcEpc rssi:(int8_t)rssi;
 - (void)readerConnected:(uint8_t)status;
 - (void)readerConnected;
 - (void)ackReceived:(uint8_t)commandCode;
 - (void)errReceived:(uint8_t)errCode;
+- (void)errDetailReceived:(NSData *)errCode;
 - (void)readerInfoReceived:(NSData *)data;
+- (void)readerInfoReceived:(int16_t)onTime
+                   offTime:(int16_t)offTime
+                 senseTime:(int16_t)senseTime
+                  lbtLebel:(int16_t)lbtLebel
+                  fhEnable:(BOOL)fhEnable
+                 lbtEnable:(BOOL)lbtEnable
+                  cwEnable:(BOOL)cwEnable;
+
+
+- (void)frequencyHoppingModeReceived:(uint8_t)statusCode;
 - (void)regionReceived:(uint8_t)region;
 - (void)selectParamReceived:(NSData *)selParam;
 - (void)queryParamReceived:(NSData *)qryParam;
 - (void)channelReceived:(uint8_t)channel channelOffset:(uint8_t)channelOffset;
 - (void)fhLbtReceived:(NSData *)fhLb;
-- (void)txPowerLevelReceived:(uint8_t)power;
+- (void)txPowerLevelReceived:(NSData*)power;
 - (void)tagMemoryReceived:(NSData *)data;
 - (void)hoppingTableReceived:(NSData *)table;
 - (void)modulationParamReceived:(uint8_t)param;
 - (void)anticolParamReceived:(uint8_t)param;
+- (void)anticolParamReceived:(uint8_t)mode start:(uint8_t)start max:(uint8_t)max min:(uint8_t)min;
 - (void)tempReceived:(uint8_t)temp;
 - (void)rssiReceived:(uint16_t)rssi;
 - (void)registeryItemReceived:(NSData *)item;
 - (void)batteryChargeReceived:(int)battery;
 - (void)genericReceived:(NSData*)data;
 - (void)startedReadTags:(uint8_t)statusCode;
-- (void)responseSetPwr:(uint8_t)status;
+- (void)didSetOutputPowerLevel:(uint8_t)status;
 - (void)writedReceived:(uint8_t)statusCode;
 - (void)stoppedReadTags:(uint8_t)statusCode;
 - (void)lockedReceived:(uint8_t)statusCode;
@@ -147,9 +169,17 @@
 - (void)didSetHoppintTbleReceived:(uint8_t)statusCode;
 - (void)didSetModulationReceived:(uint8_t)statusCode;
 - (void)didSetAntiColModeReceived:(uint8_t)statusCode;
+- (void)sessionReceived:(uint8_t)session;
+- (void)didsetStopConditionMtnu:(uint8_t)statusCode;
+- (void)stopConditionReceived:(NSData *)data;
 
-- (void)resOptiFreqHPTable:(uint8_t)status;
-- (void)resFreqHPTable:(uint8_t)status;
+- (void)didSetOptiFreqHPTable:(uint8_t)statusCode;
+- (void)didSetFreqHPTable:(uint8_t)statusCode;
+- (void)didSetFreqHPMode:(uint8_t)statusCode;
+- (void)didSetSession:(uint8_t)statusCode;
+
+- (void)didSetRegistry:(uint8_t)statusCode;
+
 
 @end
 
