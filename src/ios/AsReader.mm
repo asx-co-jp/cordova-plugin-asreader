@@ -1360,7 +1360,7 @@
 {
 	NSLog(@"%s,called",__PRETTY_FUNCTION__);
 	_rfidRegistryUpdatedListenerCallbackId = command.callbackId;
-	
+	/*
 	if(command.arguments.count <1){
 		CDVPluginResult* pluginResult = nil;
 		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"parameter is not sufficient "];
@@ -1369,9 +1369,10 @@
 	}
 	uint8_t _update;
 	_update = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:0]]intValue];
+	*/
 	@try {
 		
-		if(![self updateRfidRegistry:_update]){
+		if(![self updateRfidRegistry]){
 			CDVPluginResult* pluginResult = nil;
 			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to update rfid reader registry"];
 			[pluginResult setKeepCallbackAsBool:YES];
@@ -2006,7 +2007,8 @@
  q:(uint8_t)q
 {
 	NSLog(@"%s,called",__PRETTY_FUNCTION__);
-	return [self.rfidRcp setQueryParam:dr m:m trext:trext sel:sel session:session target:target q:q];
+	return NO;
+	//return [self.rfidRcp setQueryParam:dr m:m trext:trext sel:sel session:session target:target q:q];
 	
 }
 - (void)setedQueryParamReceived:(uint8_t)statusCode
@@ -2123,7 +2125,8 @@ continuousWave:(uint8_t)continuousWave
 - (BOOL)setRfCw:(uint8_t)on
 {
 	NSLog(@"%s,called",__PRETTY_FUNCTION__);
-	return [self.rfidRcp setRfCw:on];
+	return NO;
+	//return [self.rfidRcp setRfCw:on];
 }
 - (void)setedCwReceived:(uint8_t)statusCode
 {
@@ -2271,9 +2274,9 @@ dataToWrite:(NSData*)dataToWrite
 	return [self.rfidRcp setAnticollision:mode qStart:qStart qMax:qMax qMin:qMin];
 }
 
-- (BOOL)updateRfidRegistry:(uint8_t)update{
+- (BOOL)updateRfidRegistry{
 	NSLog(@"%s,called",__PRETTY_FUNCTION__);
-	return [self.rfidRcp updateRegistry:update];
+	return [self.rfidRcp updateRegistry];
 }
 
 - (void)updatedRegistry:(uint8_t)statusCode{

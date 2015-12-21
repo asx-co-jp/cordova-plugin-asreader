@@ -6,12 +6,10 @@
 //  Copyright (c) 2013 Asterisk. All rights reserved.
 //
 #import <Foundation/Foundation.h>
-#import "RcpBarcodeApi.h"
-#import "UartMgr.h"
 
 @protocol RcpBarcodeDelegate;
 
-@interface RcpBarcodeApi : NSObject <UartMgrBarcodeDelegate>
+@interface RcpBarcodeApi : NSObject
 
 - (NSString*)getSDKVersion;
 - (id)init;

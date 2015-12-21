@@ -1,0 +1,78 @@
+2.3.8
+■共通
+以下の事象を改善
+・iOS9.2にアップデートすると、AsReader接続時の挙動が不安定になることがあったため修正
+
+2.3.7
+■共通
+追加
+・以下のメソッドを追加
+    - (void)setReaderPowerWithBeep:(uint8_t)beepOn setVibration:(uint8_t)vibrationOn setIllumination:(uint8_t)illuminationOn;
+
+2.3.6
+■ASX-520R、ASR-020D
+追加
+・QRコードの読み取り処理を改善
+
+2.3.5
+■共通
+追加
+・機能の追加
+
+2.3.4
+■ASX-300R、ASR-030D
+追加
+・機能の追加
+
+2.3.3
+■ASX-300R、ASR-030D
+追加
+・epcのみを取得するメソッドを追加
+
+2.3.2
+■共通
+変更
+・バグの修正と安定性の改善
+
+2.3.1
+■ASX-510R、ASX-520R、ASX-300R
+変更
+・barcodeReceivedメソッドが呼ばれない不具合の修正
+
+2.3.0
+■ASX-510R、ASX-520R、ASX-300R
+    変更
+    ・ASX-010D、ASX-020D、ASX-030Dに対応
+
+2.2.0
+
+■ASX-510R、ASX-520R、ASX-300R
+    変更
+    ・端末が自動ロックされないよう修正
+        バーコード / RFタグを読んでいる間は、端末の自動ロックがかからないよう修正。
+        読み取り後に一定時間(iOS端末の設定)放置すると、自動ロックがかかります。
+
+    追加
+    ・バッテリー残量取得メソッドの追加
+        - (void)batteryChargeReceived:(int)battery;
+        引数：batteryでバッテリー残量(％表示)が取得できます。
+
+
+2.1.0
+
+■ASX-510R、ASX-520R
+	変更点
+	・setBeep メソッドの修正
+	      ASX-510Rで setBeep メソッドを使用する際に、
+	      vibration と illumination の設定を beep と同じにする必用がなくなりました。
+	      beep だけが反映されるようになります。
+
+	追加
+	・SDKバージョン取得メソッドの追加
+	    - (NSString*)getSDKVersion;
+
+■ASX-300R
+	追加
+	・設定変更のメソッドで、設定変更が成功した際に呼ばれるDelegateメソッドを追加しました。	    
+	・SDKバージョン取得メソッドの追加
+		- (NSString*)getSDKVersion;
