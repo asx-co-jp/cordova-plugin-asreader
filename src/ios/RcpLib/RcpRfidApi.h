@@ -6,11 +6,10 @@
 //  Copyright (c) 2013 Asterisk. All rights reserved.
 //
 #import <Foundation/Foundation.h>
-#import "UartMgr.h"
 
 @protocol RcpRfidDelegate;
 
-@interface RcpRfidApi : NSObject <UartMgrRfidDelegate>
+@interface RcpRfidApi : NSObject
 
 - (NSString*)getSDKVersion;
 - (id)init;
@@ -32,7 +31,6 @@ setIllumination:(uint8_t)illuminationOn;
 - (BOOL)stopReadTags;
 - (BOOL)getReaderInfo;
 - (BOOL)getReaderInfo:(uint8_t)infoType;
-- (BOOL)setReaderProgMode:(uint8_t)mode;
 - (BOOL)getRegion;
 - (BOOL)setRegion:(uint8_t)region;
 - (BOOL)getSelectParam;
@@ -43,14 +41,6 @@ setIllumination:(uint8_t)illuminationOn;
 	length:(uint8_t)length 
 	truncate:(uint8_t)truncate 
 	mask:(NSData *)mask;
-- (BOOL)getQueryParam;
-- (BOOL)setQueryParam:(uint8_t)dr
-	m:(uint8_t)m 
-	trext:(uint8_t)trext 
-	sel:(uint8_t)sel 
-	session:(uint8_t)session 
-	target:(uint8_t)target 
-	q:(uint8_t)q;
 - (BOOL)getChannel;
 - (BOOL)setChannel:(uint8_t)channel
      channelOffset:(uint8_t)channelOffset;
@@ -64,7 +54,6 @@ setIllumination:(uint8_t)illuminationOn;
 		continuousWave:(uint8_t)continuousWave;
 - (BOOL)getOutputPowerLevel;
 - (BOOL)setOutputPowerLevel:(uint16_t)power;
-- (BOOL)setRfCw:(uint8_t)on;
 - (BOOL)readFromTagMemory:(uint32_t)accessPassword
 		epc:(NSData*)epc
 		memoryBank:(uint8_t)memoryBank
@@ -73,8 +62,6 @@ setIllumination:(uint8_t)illuminationOn;
 - (BOOL)getFreqHoppingTable;
 - (BOOL)setFreqHoppingTable:(uint8_t)tableSize
 		channels:(NSData*)channels;
-- (BOOL)getModulation;
-- (BOOL)setModulation:(uint8_t)mode;
 - (BOOL)getSession;
 - (BOOL)setSession:(uint8_t)session;
 - (BOOL)getAnticollision;
@@ -90,7 +77,6 @@ setIllumination:(uint8_t)illuminationOn;
 - (BOOL)lockTagMemory:(uint32_t)accessPassword
 		epc:(NSData*)epc
 		lockData:(uint32_t)lockData;
-- (BOOL)getTemperature;
 - (BOOL)getRssi;
 -(BOOL) setStopConditionMtnu:(uint8_t)mtnu
                     setMtime:(uint8_t)mtime
@@ -108,7 +94,7 @@ setIllumination:(uint8_t)illuminationOn;
 - (BOOL)setOptimumFrequencyHoppingTable;
 -(BOOL) GetFrequencyHoppingMode;
 - (BOOL)SetFrequencyHoppingMode:(uint8_t)mode;
-- (BOOL)updateRegistry:(uint8_t)update;
+- (BOOL)updateRegistry;
 @property (nonatomic, assign) BOOL isConnected;
 @property (nonatomic, weak) id<RcpRfidDelegate> delegate;
 @end
@@ -123,36 +109,21 @@ setIllumination:(uint8_t)illuminationOn;
 - (void)pcEpcRssiReceived:(NSData *)pcEpc rssi:(int8_t)rssi;
 - (void)readerConnected:(uint8_t)status;
 - (void)readerConnected;
-- (void)ackReceived:(uint8_t)commandCode;
 - (void)errReceived:(uint8_t)errCode;
 - (void)errDetailReceived:(NSData *)errCode;
 - (void)readerInfoReceived:(NSData *)data;
-- (void)readerInfoReceived:(int16_t)onTime
-                   offTime:(int16_t)offTime
-                 senseTime:(int16_t)senseTime
-                  lbtLebel:(int16_t)lbtLebel
-                  fhEnable:(BOOL)fhEnable
-                 lbtEnable:(BOOL)lbtEnable
-                  cwEnable:(BOOL)cwEnable;
-
-
 - (void)frequencyHoppingModeReceived:(uint8_t)statusCode;
 - (void)regionReceived:(uint8_t)region;
 - (void)selectParamReceived:(NSData *)selParam;
-- (void)queryParamReceived:(NSData *)qryParam;
 - (void)channelReceived:(uint8_t)channel channelOffset:(uint8_t)channelOffset;
 - (void)fhLbtReceived:(NSData *)fhLb;
 - (void)txPowerLevelReceived:(NSData*)power;
 - (void)tagMemoryReceived:(NSData *)data;
 - (void)hoppingTableReceived:(NSData *)table;
-- (void)modulationParamReceived:(uint8_t)param;
 - (void)anticolParamReceived:(uint8_t)param;
 - (void)anticolParamReceived:(uint8_t)mode start:(uint8_t)start max:(uint8_t)max min:(uint8_t)min;
-- (void)tempReceived:(uint8_t)temp;
 - (void)rssiReceived:(uint16_t)rssi;
-- (void)registeryItemReceived:(NSData *)item;
 - (void)batteryChargeReceived:(int)battery;
-- (void)genericReceived:(NSData*)data;
 - (void)startedReadTags:(uint8_t)statusCode;
 - (void)didSetOutputPowerLevel:(uint8_t)status;
 - (void)writedReceived:(uint8_t)statusCode;
@@ -161,13 +132,10 @@ setIllumination:(uint8_t)illuminationOn;
 - (void)killedReceived:(uint8_t)statusCode;
 - (void)didSetRegionReceived:(uint8_t)statusCode;
 - (void)didSetSelParamReceived:(uint8_t)statusCode;
-- (void)didSetQueryParamReceived:(uint8_t)statusCode;
 - (void)didSetChParamReceived:(uint8_t)statusCode;
 - (void)didSetFhLbtReceived:(uint8_t)statusCode;
 - (void)didSetTxPwrReceived:(uint8_t)statusCode;
-- (void)didSetCwReceived:(uint8_t)statusCode;
 - (void)didSetHoppintTbleReceived:(uint8_t)statusCode;
-- (void)didSetModulationReceived:(uint8_t)statusCode;
 - (void)didSetAntiColModeReceived:(uint8_t)statusCode;
 - (void)sessionReceived:(uint8_t)session;
 - (void)didsetStopConditionMtnu:(uint8_t)statusCode;
@@ -178,7 +146,7 @@ setIllumination:(uint8_t)illuminationOn;
 - (void)didSetFreqHPMode:(uint8_t)statusCode;
 - (void)didSetSession:(uint8_t)statusCode;
 
-- (void)didSetRegistry:(uint8_t)statusCode;
+- (void)updatedRegistry:(uint8_t)statusCode;
 
 
 @end

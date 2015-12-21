@@ -181,9 +181,10 @@ module.exports = {
 	notifyQueryParamTo: function(listener,error){
 		exec(listener, error, "AsReader", "notifyQueryParamTo", []);
 	},
+	/*
 	setQueryParamAndNotifyTo: function(dr,m,trext,sel,session,target,q,listener,error){
 		exec(listener, error, "AsReader", "setQueryParamAndNotifyTo", [dr,m,trext,sel,session,target,q]);
-	},
+	},*/
 	notifyChannelTo: function(listener,error){
 		exec(listener, error, "AsReader", "notifyChannelTo", []);
 	},
@@ -201,10 +202,10 @@ module.exports = {
 	},
 	setOutputPowerLevelAndNotifyTo: function(power,listener,error){
 		exec(listener, error, "AsReader", "setOutputPowerLevelAndNotifyTo", [power]);
-	},
+	},/*
 	setRFCwAndNotifyTo: function(on,listener,error){
 		exec(listener, error, "AsReader", "setRFCwAndNotifyTo", [on]);
-	},
+	},*/
 	readTagMemoryNotifyTo: function(accessPassword,epc,memoryBank,startAddress,dataLength,listener,error){
 		exec(listener, error, "AsReader", "readTagMemoryNotifyTo", [accessPassword,epc,memoryBank,startAddress,dataLength]);
 	},
@@ -231,6 +232,9 @@ module.exports = {
 	},
 	setAnticollisionModeAndOptions: function(mode,qStart,qMax,qMin,listener,error){
 		exec(listener, error, "AsReader", "setAnticollisionModeAndOptions", [mode,qStart,qMax,qMin]);
+	},
+	updateRfidRegistryAndNotifyTo: function(listener,error){
+		exec(listener, error, "AsReader", "updateRfidRegistryAndNotifyTo", []);
 	}
 	
 };

@@ -47,13 +47,19 @@
 #import <Foundation/Foundation.h>
 #import <ExternalAccessory/ExternalAccessory.h>
 
+extern NSString* const PLIST_EXTERNAL_ACCESSORY_PROTOCOLS_KEY;
+extern NSString* const PREFIX_ASREADER_PROTOCOLS;
+extern NSString* const PROTOCOL_BARCODE;
+extern NSString* const PROTOCOL_RFID;
+extern NSString* const PROTOCOL_DONGLE_BARCODE;
+extern NSString* const PROTOCOL_DONGLE_RFID;
+
 @interface Eas : NSObject <EAAccessoryDelegate, NSStreamDelegate>
 {
 	NSString *theProtocol;
     unsigned long ProtocolCount;
     NSMutableArray *protocolList;
     EASession *eas;
-//    BOOL txPossible;
     NSMutableData *rxData;
     NSMutableData *txData;
 }
@@ -63,16 +69,16 @@
 - (void) txBytes;
 - (void) rxBytes;
 - (BOOL) openSessionForProtocol:(NSString *)protocolString;
-- (void)accessoryDidDisconnect:(NSNotification *)notification;
-- (void)accessoryDidConnect:(NSNotification *)notification;
+- (void)accessoryDidDisconnectNotification:(NSNotification *)notification;
+- (void)accessoryDidConnectNotification:(NSNotification *)notification;
 - (BOOL) isConnected;
 - (NSString *)getVersion;
 - (void) setCurrentBattery:(int)bat;
 - (int) getCurrentBattery;
-//- (BOOL) isTxPossibile;
 
 // Overrides
 - (int) readData:(NSData *) data;
 - (void) connectionChanged:(NSInteger)status;
+- (void)refresh;
 @property(nonatomic,strong) NSString *modelNumber;
 @end

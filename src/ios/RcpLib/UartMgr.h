@@ -5,18 +5,11 @@
 #import "Eas.h"
 #import <Foundation/Foundation.h>
 
-extern NSString* const PROTOCOL_BARCODE;
-extern NSString* const PROTOCOL_RFID;
-extern NSString* const PROTOCOL_DONGLE_RFID;
-extern NSString* const PROTOCOL_DONGLE_BARCODE;
-
 @protocol UartMgrBarcodeDelegate;
 @protocol UartMgrRfidDelegate;
 
 @interface UartMgr : Eas
 + (UartMgr*)sharedInstance;
-- (id)initBarcode;
-- (id)initRfid;
 - (BOOL)openBarcode;
 - (BOOL)openRfid;
 - (BOOL)isBarcodeOpened;
