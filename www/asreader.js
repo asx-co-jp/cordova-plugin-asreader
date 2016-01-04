@@ -146,7 +146,7 @@ module.exports = {
 		exec(listener, null, "AsReader", "setRfidPluggedListener", []);
 	},
 	notifyRegionTo: function(listener){
-		exec(listener, null, "AsReader", "sendRegionTo", []);
+		exec(listener, null, "AsReader", "notifyRegionTo", []);
 	},
 	setRegionAndNotifyTo: function(region,listener,error){
 		exec(listener, error, "AsReader", "setRegionAndNotifyTo", [region]);
