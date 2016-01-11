@@ -324,20 +324,30 @@
 }
 - (void)configureBarcode:(CDVInvokedUrlCommand*)command
 {
-	uint8_t beepOn = 0xFF;
-	uint8_t vibrationOn = 0xFF;
-	uint8_t illuminationOn = 0xFF;
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	uint8_t beepOn = 0x01;
+	uint8_t vibrationOn = 0x01;
+	uint8_t illuminationOn = 0x01;
+	CDVPluginResult* pluginResult = nil;
 	
 	if(command.arguments.count >=1 && ![@"YES" isEqualToString:[[command arguments] objectAtIndex:0]]){
+		NSLog(@"beepOn:%@",[[command arguments] objectAtIndex:0]);
 		beepOn = 0x00;
 	}
 	if(command.arguments.count >=2 && ![@"YES" isEqualToString:[[command arguments] objectAtIndex:1]]){
+		NSLog(@"vibrationOn:%@",[[command arguments] objectAtIndex:1]);
 		vibrationOn = 0x00;
 	}
 	if(command.arguments.count >=3 && ![@"YES" isEqualToString:[[command arguments] objectAtIndex:2]]){
+		NSLog(@"illuminationOn:%@",[[command arguments] objectAtIndex:2]);
 		illuminationOn = 0x00;
 	}
-	[self.barcodeRcp setBeep:beepOn setVibration:vibrationOn setIllumination:illuminationOn];
+	if([self.barcodeRcp setBeep:beepOn setVibration:vibrationOn setIllumination:illuminationOn]){
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"success"];
+	}else{
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to configure RFID reader"];
+	}
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)setEncoding:(CDVInvokedUrlCommand*)command
@@ -751,20 +761,32 @@
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 - (void)configureRfid:(CDVInvokedUrlCommand*)command{
-	uint8_t beepOn = 0xFF;
-	uint8_t vibrationOn = 0xFF;
-	uint8_t illuminationOn = 0xFF;
+	NSLog(@"%s,called",__PRETTY_FUNCTION__);
+	uint8_t beepOn = 0x01;
+	uint8_t vibrationOn = 0x01;
+	uint8_t illuminationOn = 0x01;
+	CDVPluginResult* pluginResult = nil;
 	
 	if(command.arguments.count >=1 && ![@"YES" isEqualToString:[[command arguments] objectAtIndex:0]]){
+		NSLog(@"beepOn:%@",[[command arguments] objectAtIndex:0]);
 		beepOn = 0x00;
 	}
 	if(command.arguments.count >=2 && ![@"YES" isEqualToString:[[command arguments] objectAtIndex:1]]){
+		NSLog(@"vibrationOn:%@",[[command arguments] objectAtIndex:1]);
 		vibrationOn = 0x00;
 	}
 	if(command.arguments.count >=3 && ![@"YES" isEqualToString:[[command arguments] objectAtIndex:2]]){
+		NSLog(@"illuminationOn:%@",[[command arguments] objectAtIndex:2]);
 		illuminationOn = 0x00;
 	}
-	[self.rfidRcp setBeep:beepOn setVibration:vibrationOn setIllumination:illuminationOn];
+	if([self.rfidRcp setBeep:beepOn setVibration:vibrationOn setIllumination:illuminationOn]){
+		NSLog(@"configureRfid: success");
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"success"];
+	}else{
+		NSLog(@"configureRfid: fail");
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to configure RFID reader"];
+	}
+	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)setRfidPowerListener:(CDVInvokedUrlCommand*)command{
