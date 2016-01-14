@@ -235,7 +235,19 @@ module.exports = {
 	},
 	updateRfidRegistryAndNotifyTo: function(listener,error){
 		exec(listener, error, "AsReader", "updateRfidRegistryAndNotifyTo", []);
-	}
+	},
+	notifyStopConditionTo: function(listener,error){
+		exec(listener, error, "AsReader", "notifyStopConditionTo", []);
+	},
+	setStopConditionAndNotifyTo: function(mtnu,mtime,repeatCycle,listener,error){
+		exec(listener, error, "AsReader", "setStopConditionAndNotifyTo", [mtnu,mtime,repeatCycle]);
+	},
+	notifySessionTo: function(listener,error){
+		exec(listener, error, "AsReader", "notifySessionTo", []);
+	},
+	setSessionAndNotifyTo: function(session,listener,error){
+		exec(listener, error, "AsReader", "setSessionAndNotifyTo", [session]);
+	},
 	
 };
 
