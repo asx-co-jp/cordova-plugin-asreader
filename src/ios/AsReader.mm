@@ -160,6 +160,10 @@
 - (void)notifyAdcTo:(CDVInvokedUrlCommand*)command;
 - (void)setAnticollisionMode:(CDVInvokedUrlCommand*)command;
 - (void)setAnticollisionModeAndOptions:(CDVInvokedUrlCommand*)command;
+- (void)setSessionAndNotifyTo:(CDVInvokedUrlCommand*)command;
+- (void)notifySessionTo:(CDVInvokedUrlCommand*)command;
+- (void)setStopConditionAndNotifyTo:(CDVInvokedUrlCommand*)command;
+- (void)notifyStopConditionTo:(CDVInvokedUrlCommand*)command;
 @end
 
 @implementation AsReader
