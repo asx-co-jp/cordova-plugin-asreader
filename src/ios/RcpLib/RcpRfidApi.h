@@ -125,6 +125,7 @@ setIllumination:(uint8_t)illuminationOn;
 - (void)rssiReceived:(uint16_t)rssi;
 - (void)batteryChargeReceived:(int)battery;
 - (void)startedReadTags:(uint8_t)statusCode;
+- (void)startedReadTagsWithRssi:(uint8_t)statusCode;
 - (void)didSetOutputPowerLevel:(uint8_t)status;
 - (void)writedReceived:(uint8_t)statusCode;
 - (void)stoppedReadTags:(uint8_t)statusCode;
@@ -138,7 +139,7 @@ setIllumination:(uint8_t)illuminationOn;
 - (void)didSetHoppintTbleReceived:(uint8_t)statusCode;
 - (void)didSetAntiColModeReceived:(uint8_t)statusCode;
 - (void)sessionReceived:(uint8_t)session;
-- (void)didsetStopConditionMtnu:(uint8_t)statusCode;
+- (void)didSetStopConditionMtnu:(uint8_t)statusCode;
 - (void)stopConditionReceived:(NSData *)data;
 
 - (void)didSetOptiFreqHPTable:(uint8_t)statusCode;

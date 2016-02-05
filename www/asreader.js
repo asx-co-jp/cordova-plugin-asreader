@@ -130,6 +130,9 @@ module.exports = {
 	setRfidStartedReadTagListener: function(listener){
 		exec(listener, null, "AsReader", "setRfidStartedReadTagListener", []);
 	},
+	setRfidStartedReadTagWithRssiListener: function(listener){
+		exec(listener, null, "AsReader", "setRfidStartedReadTagWithRssiListener", []);
+	},
 	setRfidPcEpcStringListener: function(listener){
 		exec(listener, null, "AsReader", "setRfidPcEpcStringListener", []);
 	},
