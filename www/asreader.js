@@ -66,6 +66,9 @@ module.exports = {
 	readBarcodeContinuously: function(success, error){
 		 exec(success, error, "AsReader", "readBarcodeContinuously", []);
 	},
+	stopReadBarcode: function(success, error){
+		 exec(success, error, "AsReader", "stopReadBarcode", []);
+	},
 	isBarcodePlugged: function(success, error){
 		 exec(success, error, "AsReader", "isBarcodePlugged", []);
 	},

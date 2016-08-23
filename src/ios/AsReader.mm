@@ -379,6 +379,7 @@
  		[NSString stringWithFormat:@"%d",NSWindowsCP1250StringEncoding], @"WindowsCP1250",
  		[NSString stringWithFormat:@"%d",NSISO2022JPStringEncoding], @"ISO2022JP",
  		[NSString stringWithFormat:@"%d",NSMacOSRomanStringEncoding], @"MacOSRoman",
+ 		[NSString stringWithFormat:@"%d",NSUTF8StringEncoding], @"UTF8",
  		[NSString stringWithFormat:@"%d",NSUTF16StringEncoding], @"UTF16",
  		[NSString stringWithFormat:@"%d",NSUTF16BigEndianStringEncoding], @"UTF16BigEndian",
  		[NSString stringWithFormat:@"%d",NSUTF16LittleEndianStringEncoding], @"UTF16LittleEndian",
@@ -389,6 +390,13 @@
 		
 	if(command.arguments.count >=1 && [encodingMap objectForKey:[[command arguments] objectAtIndex:0]]){
 		_encoding = [[encodingMap objectForKey:[[command arguments] objectAtIndex:0]] intValue];
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[[command arguments] objectAtIndex:0]];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+	}else{
+		CDVPluginResult* pluginResult = nil;
+		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Invalid Argument"];
+		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 	}
 	
 }
@@ -405,6 +413,11 @@
 		if(rtn && _barcodePowerListenerCallbackId){
 			CDVPluginResult* pluginResult = nil;
 			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"ON"];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:_barcodePowerListenerCallbackId];
+		}else if(!rtn && _barcodePowerListenerCallbackId){
+			CDVPluginResult* pluginResult = nil;
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"ONFAIL"];
 			[pluginResult setKeepCallbackAsBool:YES];
 			[self.commandDelegate sendPluginResult:pluginResult callbackId:_barcodePowerListenerCallbackId];
 		}
@@ -425,6 +438,11 @@
 		if(rtn && _barcodePowerListenerCallbackId){
 			CDVPluginResult* pluginResult = nil;
 			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"OFF"];
+			[pluginResult setKeepCallbackAsBool:YES];
+			[self.commandDelegate sendPluginResult:pluginResult callbackId:_barcodePowerListenerCallbackId];
+		}else if(!rtn && _barcodePowerListenerCallbackId){
+			CDVPluginResult* pluginResult = nil;
+			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"OFFFAIL"];
 			[pluginResult setKeepCallbackAsBool:YES];
 			[self.commandDelegate sendPluginResult:pluginResult callbackId:_barcodePowerListenerCallbackId];
 		}
