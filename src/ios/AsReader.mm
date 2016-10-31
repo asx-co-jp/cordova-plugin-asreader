@@ -2005,7 +2005,7 @@
 	});
 }
 
-- (void)epcRssiReceived:(NSData *)epc rssi:(int8_t)rssi
+- (void)epcReceived:(NSData *)epc rssi:(int8_t)rssi
 {
 	NSLog(@"%s,called",__PRETTY_FUNCTION__);
 	dispatch_async(dispatch_get_main_queue(),^{
