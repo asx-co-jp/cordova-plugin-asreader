@@ -2066,7 +2066,7 @@
 			NSMutableString* tmpTid = [[NSMutableString alloc] init];
 			unsigned char* ptrTid= (unsigned char*) [tid bytes];
 			for(int i = 0; i < tid.length; i++) {
-				[tmp appendFormat:@"%02X", *ptrTid++ & 0xFF ];
+				[tmpTid appendFormat:@"%02X", *ptrTid++ & 0xFF ];
 			}
 			hexStrTid = tmpTid;
 			
