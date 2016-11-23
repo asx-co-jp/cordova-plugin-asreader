@@ -19,7 +19,8 @@ http://asreader.com
 
 # Known issue
 1.Use setRfidPcEpcDataWithRssiListener to set a listener  will result in  crash when receiving data because of Cordova issue
-2.Listener set bysetRfidEpcDataWithRssiListener and setRfidEpcDataWithRssiListenerwill never be called because of SDK issue
+2.Listener set by setRfidEpcDataWithRssiListener and setRfidEpcDataWithRssiListener will never be called because of SDK issue
+3.Listener set by setRfidEpcDataWithTidListener will not work becasue of Cordova issue. Same as issue no.2, Cordova does not support transfering multiple NSData object in result.
 
 Enjoy AsReader & Cordova!
 
