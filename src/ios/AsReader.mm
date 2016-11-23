@@ -1013,6 +1013,7 @@
 	uint8_t _length;
 	uint8_t _truncate;
 	NSData *_mask;
+	NSString *_hexMask;
 	
 	if(command.arguments.count >=7){
 		@try {
@@ -1022,8 +1023,21 @@
 			_pointer = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:3]]intValue];
 			_length = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:4]]intValue];
 			_truncate = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:5]]intValue];
-		
-			_mask = (NSData *)[[command arguments] objectAtIndex:6];
+			_hexMask = [NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:6]];
+
+			_hexMask = [_hexMask stringByReplacingOccurrencesOfString:@" " withString:@""];
+			NSMutableData *commandToSend= [[NSMutableData alloc] init];
+			unsigned char whole_byte;
+			char byte_chars[3] = {'\0','\0','\0'};
+			int i;
+			for (i=0; i < [_hexMask length]/2; i++) {
+			    byte_chars[0] = [_hexMask characterAtIndex:i*2];
+			    byte_chars[1] = [_hexMask characterAtIndex:i*2+1];
+			    whole_byte = strtol(byte_chars, NULL, 16);
+			    [commandToSend appendBytes:&whole_byte length:1]; 
+			}
+			NSLog(@"mask:%@", commandToSend);
+			_mask = commandToSend;
 			
 			if(![self setSelectParam:_target action:_action memoryBank:_memoryBank pointer:_pointer length:_length truncate:_truncate mask:_mask]){
 				CDVPluginResult* pluginResult = nil;
