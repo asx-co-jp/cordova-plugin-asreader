@@ -16,8 +16,9 @@
 - (BOOL)isRfidOpened;
 - (void)closeBarcode;
 - (void)closeRfid;
-- (BOOL)send:(NSData*)data;
+- (BOOL)send:(NSData*)data force:(BOOL)force;
 - (BOOL)isJacket;
+@property (nonatomic, assign) NSInteger ProtocolType;
 @property (nonatomic, weak) id<UartMgrBarcodeDelegate> barcodeDelegate;
 @property (nonatomic, weak) id<UartMgrRfidDelegate> rfidDelegate;
 @end
