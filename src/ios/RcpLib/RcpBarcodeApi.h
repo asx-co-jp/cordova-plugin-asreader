@@ -25,8 +25,9 @@
 - (BOOL)setBeep:(uint8_t)beepOn
         setVibration:(uint8_t)vibrationOn
         setIllumination:(uint8_t)illuminationOn;
+@property (nonatomic, assign) NSInteger ProtocolType;
 @property (nonatomic, assign) BOOL isConnected;
-@property (nonatomic, weak) id<RcpBarcodeDelegate> delegate;
+@property (atomic, retain) id<RcpBarcodeDelegate> delegate;
 @property (nonatomic, strong) NSString *model;
 @end
 
@@ -35,6 +36,7 @@
 - (void)readerConnected:(uint8_t)status;
 - (void)pluggedBarcode:(BOOL)plug;
 - (void)barcodeReceived:(NSData *)barcode;
+- (void)barcodeStringReceived:(NSString *)barcode;
 - (void)batteryChargeReceived:(int)battery;
 - (void)startedReadBarcodes:(uint8_t)statusCode;
 - (void)stoppedReadBarcodes:(uint8_t)statusCode;
