@@ -254,10 +254,11 @@ module.exports = {
 	setSessionAndNotifyTo: function(session,listener,error){
 		exec(listener, error, "AsReader", "setSessionAndNotifyTo", [session]);
 	},
-	setComboPluggedListener: function(listener){
-        exec(listener, null, "AsReader", "setComboPluggedListener", []);
+    setPluggedListener: function(listener){
+        exec(listener, null, "AsReader", "setPluggedListener", []);
     },
-
-	
+    getCommonReaderInfo: function(success, error){
+        exec(success, error, "AsReader", "getCommonReaderInfo", []);
+    }
 };
 

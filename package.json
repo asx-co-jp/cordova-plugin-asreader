@@ -1,0 +1,22 @@
+{
+  "name": "cordova-plugin-asreader",
+  "version": "0.0.6",
+  "description": "Cordova AsReader Plugin",
+  "cordova": {
+    "id": "cordova-plugin-asreader",
+    "platforms": [
+      "ios"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/asx-co-jp/cordova-plugin-asreader"
+  },
+  "keywords": [
+    "cordova",
+    "asreader",
+    "ecosystem:cordova",
+    "cordova-ios"
+  ],
+  "author": "Asterisk Inc."
+}

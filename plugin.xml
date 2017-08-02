@@ -19,7 +19,18 @@
 		<header-file src="src/ios/RcpLib/RcpBarcodeApi.h" />
 		<header-file src="src/ios/RcpLib/RcpRfidApi.h" />
 		<header-file src="src/ios/RcpLib/UartMgr.h" />
-		
+        <header-file src="src/ios/RcpLib/typeDefine.h" />
+        <header-file src="src/ios/RcpLib/SDeviceApi.h" />
+        <header-file src="src/ios/RcpLib/RcpApi.h" />
+        <header-file src="src/ios/RcpLib/protocols.h" />
+        <header-file src="src/ios/RcpLib/NFCCommandDefine.h" />
+        <header-file src="src/ios/RcpLib/CommonReaderInfo.h" />
+        <header-file src="src/ios/RcpLib/CommonDevice.h" />
+        <header-file src="src/ios/RcpLib/ComboRFIDApi.h" />
+        <header-file src="src/ios/RcpLib/ComboNFCApi.h" />
+        <header-file src="src/ios/RcpLib/ComboDevices.h" />
+        <header-file src="src/ios/RcpLib/ComboBarcodeApi.h" />
+
 		<framework src="ExternalAccessory.framework" />
 		
 		<config-file target="*-Info.plist" parent="UISupportedExternalAccessoryProtocols">
@@ -28,6 +39,8 @@
 					<string>jp.co.asx.asreader.rfid</string>
 					<string>jp.co.asx.asreader.6dongle.barcode</string>
 					<string>jp.co.asx.asreader.6dongle.rfid</string>
+                    <string>jp.co.asx.asreader.0230D</string>
+                    <string>jp.co.asx.asreader.0240D</string>
 				</array>
 		</config-file>
 	</platform>

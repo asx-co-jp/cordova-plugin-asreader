@@ -103,7 +103,7 @@
 	NSString *_rfidSessionReceivedListenerCallbackId;
 	NSString *_rfidSessionSettedListenerCallbackId;
     
-    NSString *_comboPluggedListenerCallbackId;
+    NSString *_pluggedListenerCallbackId;
 
 }
 /*****************BARCODE*************************/
@@ -606,19 +606,46 @@
 }
 - (void)rfidPowerOn:(CDVInvokedUrlCommand*)command{
 	NSLog(@"%s,called",__PRETTY_FUNCTION__);
-	
-	[self rfidPowerOn];
-	CDVPluginResult* pluginResult = nil;
-	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+//	
+//	[self rfidPowerOn];
+//	CDVPluginResult* pluginResult = nil;
+//	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+//	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    if ([self.m_DeviceCommon open] && _barcodePowerListenerCallbackId) {
+        [self.m_DeviceCommon setReaderPower:YES
+                                     buzzer:YES
+                                  vibration:YES
+                                        led:YES
+                               illumination:YES
+                                       mode:RCP_COMBO_DEVICE_RFID];
+        CDVPluginResult* pluginResult = nil;
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"ON"];
+        [pluginResult setKeepCallbackAsBool:YES];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }else if (![self.m_DeviceCommon open] && _barcodePowerListenerCallbackId) {
+        CDVPluginResult* pluginResult = nil;
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"ONFAIL"];
+        [pluginResult setKeepCallbackAsBool:YES];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }
 }
 - (void)rfidPowerOff:(CDVInvokedUrlCommand*)command{
 	NSLog(@"%s,called",__PRETTY_FUNCTION__);
-	
-	[self rfidPowerOff];
-	CDVPluginResult* pluginResult = nil;
-	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+//	
+//	[self rfidPowerOff];
+//	CDVPluginResult* pluginResult = nil;
+//	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+//	[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    [self.m_DeviceCommon setReaderPower:NO
+                                 buzzer:YES
+                              vibration:YES
+                                    led:YES
+                           illumination:YES
+                                   mode:RCP_COMBO_DEVICE_RFID];
+    CDVPluginResult* pluginResult = nil;
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+
 }
 - (void)startReadTags:(CDVInvokedUrlCommand*)command{
 	NSLog(@"%s,called",__PRETTY_FUNCTION__);
@@ -2590,9 +2617,58 @@ dataToWrite:(NSData*)dataToWrite
 	}
 }
 
-- (void)setComboPluggedListener:(CDVInvokedUrlCommand*)command {
+- (void)setPluggedListener:(CDVInvokedUrlCommand *)command {
     NSLog(@"%s,called",__PRETTY_FUNCTION__);
-    _comboPluggedListenerCallbackId = command.callbackId;
+    _pluggedListenerCallbackId = command.callbackId;
+}
+
+- (void)getCommonReaderInfo:(CDVInvokedUrlCommand *)command {
+    NSLog(@"%s,called",__PRETTY_FUNCTION__);
+    CDVPluginResult* pluginResult = nil;
+    CommonReaderInfo *info = [CommonReaderInfo sharedInstance];
+    if (info) {
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        [dic setValue:info.strName forKey:@"strName"];
+        [dic setValue:info.strfirmware forKey:@"strfirmware"];
+        [dic setValue:info.strhardware forKey:@"strhardware"];
+        [dic setValue:info.strID forKey:@"strID"];
+        [dic setValue:info.strmanufacturer forKey:@"strmanufacturer"];
+        [dic setValue:info.strmodelNumber forKey:@"strmodelNumber"];
+        [dic setValue:info.strserialNumber forKey:@"strserialNumber"];
+        [dic setValue:info.strProtocol forKey:@"strProtocol"];
+        [dic setValue:[NSNumber numberWithInt:info.m_nReaderType] forKey:@"m_nReaderType"];
+        [dic setValue:[NSNumber numberWithInt:info.m_nCurrentSelectDevice] forKey:@"m_nCurrentSelectDevice"];
+        [dic setValue:[NSNumber numberWithBool:info.bCanUseRFID] forKey:@"bCanUseRFID"];
+        [dic setValue:[NSNumber numberWithBool:info.bCanUseBarcode] forKey:@"bCanUseBarcode"];
+        [dic setValue:[NSNumber numberWithBool:info.bCanUseNFC] forKey:@"bCanUseNFC"];
+        [dic setValue:[NSNumber numberWithBool:info.bIsPowerOn] forKey:@"bIsPowerOn"];
+        [dic setValue:[NSNumber numberWithBool:info.bBeep] forKey:@"bBeep"];
+        [dic setValue:[NSNumber numberWithBool:info.bVirbration] forKey:@"bVirbration"];
+        [dic setValue:[NSNumber numberWithBool:info.bLED] forKey:@"bLED"];
+        [dic setValue:[NSNumber numberWithBool:info.bIllumination] forKey:@"bIllumination"];
+        [dic setValue:[NSNumber numberWithBool:info.bIsTriggerModeDefault] forKey:@"bIsTriggerModeDefault"];
+        [dic setValue:[NSNumber numberWithFloat:info.fRFIDpower] forKey:@"fRFIDpower"];
+        [dic setValue:[NSNumber numberWithFloat:info.fRFIDpowerMax] forKey:@"fRFIDpowerMax"];
+        [dic setValue:[NSNumber numberWithFloat:info.fRFIDpowerMin] forKey:@"fRFIDpowerMin"];
+        [dic setValue:[NSNumber numberWithInt:info.nRFIDonTime] forKey:@"nRFIDonTime"];
+        [dic setValue:[NSNumber numberWithInt:info.nRFIDoffTime] forKey:@"nRFIDoffTime"];
+        [dic setValue:[NSNumber numberWithInt:info.nRFIDchannel] forKey:@"nRFIDchannel"];
+        [dic setValue:[NSNumber numberWithInt:info.nCount] forKey:@"nCount"];
+        [dic setValue:[NSNumber numberWithInt:info.nScanTime] forKey:@"nScanTime"];
+        [dic setValue:[NSNumber numberWithInt:info.nCycle] forKey:@"nCycle"];
+        [dic setValue:[NSNumber numberWithInt:info.nCst] forKey:@"nCst"];
+        [dic setValue:[NSNumber numberWithInt:info.nRfl] forKey:@"nRfl"];
+        [dic setValue:[NSNumber numberWithInt:info.nLbt] forKey:@"nLbt"];
+        [dic setValue:[NSNumber numberWithInt:info.nFh] forKey:@"nFh"];
+        [dic setValue:[NSNumber numberWithInt:info.nCw] forKey:@"nCw"];
+        [dic setValue:[NSNumber numberWithBool:info.bSmartHopping] forKey:@"bSmartHopping"];
+        [dic setValue:info.strRegion forKey:@"strRegion"];
+        [dic setValue:info.strRFIDModuleVersion forKey:@"strRFIDModuleVersion"];
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dic];
+    }else {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Failed to get common reader info."];
+    }
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void)plugged:(BOOL)plug {
@@ -2601,20 +2677,12 @@ dataToWrite:(NSData*)dataToWrite
 //    _barcodePlugged = plug;
 //    _rfidPlugged = plug;
     if(plug){
-        CommonReaderInfo *info = [CommonReaderInfo sharedInstance];
-        if((info.bCanUseBarcode)&&(info.bCanUseRFID)){
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"BARCODE"];
-        }else if(info.bCanUseBarcode){
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"BARCODE"];
-        }else if (info.bCanUseRFID){
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"RFID"];
-        }
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"YES"];
     }else{
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"NO"];
-
     }
     [pluginResult setKeepCallbackAsBool:YES];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:_comboPluggedListenerCallbackId];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:_pluggedListenerCallbackId];
 }
 
 - (void)receivedScanData:(NSData *)readData DeviceType:(int)nDeviceType {
