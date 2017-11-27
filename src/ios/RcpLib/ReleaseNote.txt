@@ -1,3 +1,45 @@
+2.3.17
+■共通
+下記メッソドの削除
+- (BOOL)setRegion:(uint8_t)region;- (void)didSetRegionReceived:(uint8_t)statusCode;
+
+2.3.16
+■共通
+追加
+・以下のメソッドを追加
+    - (int)getBatteryValue;
+
+2.3.15
+■ASR-031D
+追加
+・以下のメソッドを追加
+- (BOOL)setReaderPower:(BOOL)on connectedBeep:(BOOL)connectedBeep;
+
+2.3.14
+■共通
+以下の問題を解消
+・バックグラウンドへ移行した際にアプリがクラッシュする事があった
+・スリープからの復帰時に接続に失敗する事があった（iOS10.2以降）
+
+2.3.13
+■ASX-520R, ASR-020D
+QRコードを読んだ際の処理を改善
+
+2.3.12
+■共通
+・SDK内部処理の改善
+・センサータグ用メソッドの追加
+・Bitcode対応の追加
+
+2.3.11
+■ASX-510R, ASX-520R, ASR-010D, ASR-020D
+・サフィックス文字（CR）が有効にならない問題を修正
+
+2.3.10
+■ASX-510R, ASX-520R, ASR-010D, ASR-020D
+・以下のメソッドを追加
+    - (void)barcodeStringReceived:(NSString *)barcode;
+
 2.3.9
 ■共通
 ・エラーコード取得処理の改善
