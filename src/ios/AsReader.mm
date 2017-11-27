@@ -951,12 +951,6 @@
 	
 	if(command.arguments.count >=1){
 		region = [[NSString stringWithFormat:@"%@", [[command arguments] objectAtIndex:0]]intValue];
-		if(![self setRegion:region]){
-			CDVPluginResult* pluginResult = nil;
-			pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"failed to set region"];
-			[pluginResult setKeepCallbackAsBool:YES];
-			[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-		}
 	}else{
 		CDVPluginResult* pluginResult = nil;
 		pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"region parameter is required."];
