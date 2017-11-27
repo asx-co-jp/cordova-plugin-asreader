@@ -2106,11 +2106,6 @@
 		[self.commandDelegate sendPluginResult:pluginResult callbackId:_rfidRegionListenerCallbackId];
 	}
 }
-- (BOOL)setRegion:(uint8_t)region
-{
-	NSLog(@"%s,called",__PRETTY_FUNCTION__);
-	return [self.rfidRcp setRegion:region];
-}
 - (void)didSetRegionReceived:(uint8_t)statusCode
 {
 	NSLog(@"%s,called",__PRETTY_FUNCTION__);
