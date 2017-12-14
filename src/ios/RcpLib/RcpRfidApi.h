@@ -7,11 +7,13 @@
 //
 #import <Foundation/Foundation.h>
 
+
 @protocol RcpRfidDelegate;
 
 @interface RcpRfidApi : NSObject
 
 - (NSString*)getSDKVersion;
+- (int)getBatteryValue;
 - (id)init;
 - (BOOL)open;
 - (BOOL)isOpened;
@@ -19,20 +21,22 @@
 - (void)plugStatusChanged:(NSInteger)status;
 - (int)receive:(NSData*)data;
 - (BOOL)setReaderPower:(BOOL)on;
+- (BOOL)setReaderPower:(BOOL)on connectedBeep:(BOOL)connectedBeep;
 - (void)setReaderPowerOnWithBeep:(uint8_t)beepOn
                   setVibration:(uint8_t)vibrationOn
                setIllumination:(uint8_t)illuminationOn;
+
 - (BOOL)setBeep:(uint8_t)beepOn
    setVibration:(uint8_t)vibrationOn
 setIllumination:(uint8_t)illuminationOn;
 - (BOOL)startReadTags:(uint8_t)mtnu mtime:(uint8_t)mtime repeatCycle:(uint16_t)repeatCycle;
 - (BOOL)startReadTagsWithRssi:(uint8_t)mtnu mtime:(uint8_t)mtime repeatCycle:(uint16_t)repeatCycle;
 - (BOOL)startReadTagsWithTid:(uint8_t)mtnu mtime:(uint8_t)mtime repeatCycle:(uint16_t)repeatCycle;
+- (BOOL)startReadTagsRFM:(uint8_t)codeType mtnu:(uint8_t)mtnu mtime:(uint8_t)mtime repeatCycle:(uint16_t)repeatCycle;
 - (BOOL)stopReadTags;
 - (BOOL)getReaderInfo;
 - (BOOL)getReaderInfo:(uint8_t)infoType;
 - (BOOL)getRegion;
-- (BOOL)setRegion:(uint8_t)region;
 - (BOOL)getSelectParam;
 - (BOOL)setSelectParam:(uint8_t)target 
 	action:(uint8_t)action 
@@ -67,6 +71,8 @@ setIllumination:(uint8_t)illuminationOn;
 - (BOOL)getAnticollision;
 - (BOOL)setAnticollision:(uint8_t)mode;
 - (BOOL)setAnticollision:(uint8_t)mode qStart:(uint8_t)qStart qMax:(uint8_t)qMax qMin:(uint8_t)qMin;
+- (BOOL)setAnticollision:(uint8_t)mode qStart:(uint8_t)qStart qMax:(uint8_t)qMax qMin:(uint8_t)qMin count:(uint8_t)count;
+- (BOOL)setReportDelay:(uint8_t)delay;
 - (BOOL)writeToTagMemory:(uint32_t)accessPassword
 		epc:(NSData*)epc
 		memoryBank:(uint8_t)memoryBank
@@ -95,8 +101,13 @@ setIllumination:(uint8_t)illuminationOn;
 -(BOOL) GetFrequencyHoppingMode;
 - (BOOL)SetFrequencyHoppingMode:(uint8_t)mode;
 - (BOOL)updateRegistry;
+
+- (BOOL)writeToTagMemory:(NSData*)epc
+        dataToWriteAscii:(NSString*)dataToWrite;
+
+@property (nonatomic, assign) NSInteger ProtocolType;
 @property (nonatomic, assign) BOOL isConnected;
-@property (nonatomic, weak) id<RcpRfidDelegate> delegate;
+@property (atomic, retain) id<RcpRfidDelegate> delegate;
 @end
 
 @protocol RcpRfidDelegate <NSObject>
@@ -107,17 +118,19 @@ setIllumination:(uint8_t)illuminationOn;
 - (void)epcReceived:(NSData *)epc rssi:(int8_t)rssi;
 - (void)epcReceived:(NSData *)epc tid:(NSData*)tid;
 - (void)pcEpcRssiReceived:(NSData *)pcEpc rssi:(int8_t)rssi;
+- (void)pcEpcSensorDataReceived:(NSData *)pcEpc sensorValue:(double)sensorValue rssi:(int8_t)rssi;
+- (void)pcEpcSensorDataReceived:(NSData *)pcEpc sensorData:(NSData *)sensorData;
 - (void)readerConnected:(uint8_t)status;
 - (void)readerConnected;
 - (void)errReceived:(uint8_t)errCode;
 - (void)errDetailReceived:(NSData *)errCode;
 - (void)readerInfoReceived:(NSData *)data;
+- (void)readerInfoReceivedWithDict:(NSDictionary *)info;
 - (void)frequencyHoppingModeReceived:(uint8_t)statusCode;
 - (void)regionReceived:(uint8_t)region;
 - (void)selectParamReceived:(NSData *)selParam;
 - (void)channelReceived:(uint8_t)channel channelOffset:(uint8_t)channelOffset;
 - (void)fhLbtReceived:(NSData *)fhLb;
-- (void)txPowerLevelReceived:(NSData*)power;
 - (void)tagMemoryReceived:(NSData *)data;
 - (void)hoppingTableReceived:(NSData *)table;
 - (void)anticolParamReceived:(uint8_t)param;
@@ -131,7 +144,6 @@ setIllumination:(uint8_t)illuminationOn;
 - (void)stoppedReadTags:(uint8_t)statusCode;
 - (void)lockedReceived:(uint8_t)statusCode;
 - (void)killedReceived:(uint8_t)statusCode;
-- (void)didSetRegionReceived:(uint8_t)statusCode;
 - (void)didSetSelParamReceived:(uint8_t)statusCode;
 - (void)didSetChParamReceived:(uint8_t)statusCode;
 - (void)didSetFhLbtReceived:(uint8_t)statusCode;
@@ -146,9 +158,15 @@ setIllumination:(uint8_t)illuminationOn;
 - (void)didSetFreqHPTable:(uint8_t)statusCode;
 - (void)didSetFreqHPMode:(uint8_t)statusCode;
 - (void)didSetSession:(uint8_t)statusCode;
+- (void)feedbackParamReceived:(uint8_t)lpf res1:(uint8_t)res1 res2:(uint8_t)res2;
 
 - (void)updatedRegistry:(uint8_t)statusCode;
+- (void)didSetReportDelayReceived:(uint8_t)statusCode;
 
+- (void)outputPowerLevelReceived:(uint16_t)power max:(uint16_t)maxPower min:(uint16_t)minPower;
+
+
+- (void)txPowerLevelReceived:(NSData*)power;
 
 @end
 

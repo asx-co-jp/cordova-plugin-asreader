@@ -62,6 +62,8 @@ extern NSString* const PROTOCOL_DONGLE_RFID;
     EASession *eas;
     NSMutableData *rxData;
     NSMutableData *txData;
+    dispatch_queue_t syncTxQueue;
+    NSThread *mThreadTx;
 }
 
 - (id) initWithProtocol:(NSMutableArray *)protocol initProtocolSize:(unsigned long )protocolSize;
@@ -81,4 +83,5 @@ extern NSString* const PROTOCOL_DONGLE_RFID;
 - (void) connectionChanged:(NSInteger)status;
 - (void)refresh;
 @property(nonatomic,strong) NSString *modelNumber;
+@property(nonatomic,assign) BOOL isSendAllowed;
 @end
